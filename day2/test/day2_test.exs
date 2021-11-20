@@ -19,4 +19,13 @@ defmodule Day2Test do
   test "star1" do
     assert Day2.solve1("star1") == 4712
   end
+
+  test "common_string" do
+    assert Day2.differences_string("abcde", "axcye") == "ace"
+    assert Day2.differences_string("fghij", "fguij") == "fgij"
+  end
+
+  test "star2" do
+    assert Day2.solve2("star2") == "lufjygedpvfbhftxiwnaorzmq"
+  end
 end
