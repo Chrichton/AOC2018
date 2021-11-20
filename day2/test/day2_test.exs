@@ -3,8 +3,13 @@ defmodule Day2Test do
   doctest Day2
 
   test "repeats" do
-    assert Day2.repeats("abccbab", 2) == 1
+    assert Day2.repeats("abccbab", 2) == 2
     assert Day2.repeats("abccbab", 3) == 1
+  end
+
+  test "box_repeat_count" do
+    assert Day2.box_repeat_count("abccbab", 2) == 1
+    assert Day2.box_repeat_count("abccbab", 3) == 1
   end
 
   test "sample1" do

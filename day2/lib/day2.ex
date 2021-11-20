@@ -2,21 +2,27 @@ defmodule Day2 do
   def solve1(filename) do
     filename
     |> read_input()
-    |> solve_star1()
+    |> calc_checksum()
   end
 
-  defp solve_star1(box_ids) do
+  defp calc_checksum(box_ids) do
     threes =
       box_ids
-      |> Enum.map(&repeats(&1, 3))
+      |> Enum.map(&box_repeat_count(&1, 3))
       |> Enum.sum()
 
     twos =
       box_ids
-      |> Enum.map(&repeats(&1, 2))
+      |> Enum.map(&box_repeat_count(&1, 2))
       |> Enum.sum()
 
     twos * threes
+  end
+
+  def box_repeat_count(string, repeat_count) do
+    if repeats(string, repeat_count) >= 1,
+      do: 1,
+      else: 0
   end
 
   def repeats(string, repeat_count) do
@@ -27,10 +33,6 @@ defmodule Day2 do
       |> Map.values()
       |> Enum.filter(&(&1 == repeat_count))
       |> Enum.count()
-
-    if count >= 1,
-      do: 1,
-      else: 0
   end
 
   defp read_input(filename) do
