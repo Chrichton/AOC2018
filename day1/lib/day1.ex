@@ -18,10 +18,11 @@ defmodule Day1 do
   end
 
   defp check_duplicate(curr, acc) do
-    new_frequency = curr + List.first(acc)
+    current_frequency = hd(acc)
+    new_frequency = curr + current_frequency
 
     if new_frequency in acc do
-      {:halt, curr + List.first(acc)}
+      {:halt, new_frequency}
     else
       {:cont, [new_frequency | acc]}
     end
