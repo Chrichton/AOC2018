@@ -11,7 +11,7 @@ defmodule Day1Valim do
     |> repeated_frequency()
   end
 
-  def repeated_frequency(file_stream) do
+  defp repeated_frequency(file_stream) do
     file_stream
     |> Stream.cycle()
     |> Enum.reduce_while({0, [0]}, fn x, {current_frequency, seen_frequencies} ->
