@@ -19,13 +19,13 @@ defmodule Day1 do
     end)
   end
 
-  defp check_duplicate(curr, {current_frequency, frequencies}) do
+  defp check_duplicate(curr, {current_frequency, seen_frequencies}) do
     new_frequency = curr + current_frequency
 
-    if new_frequency in frequencies do
+    if new_frequency in seen_frequencies do
       {:halt, new_frequency}
     else
-      {:cont, {new_frequency, MapSet.put(frequencies, new_frequency)}}
+      {:cont, {new_frequency, MapSet.put(seen_frequencies, new_frequency)}}
     end
   end
 
