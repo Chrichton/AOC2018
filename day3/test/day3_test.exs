@@ -1,6 +1,12 @@
 defmodule Day3Test do
   use ExUnit.Case
 
+  test "read input" do
+    actual = Day3.read_input("sample1")
+
+    assert actual == nil
+  end
+
   test "sample1" do
     assert Day3.solve1("sample1") == 12
   end
