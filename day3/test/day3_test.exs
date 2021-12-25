@@ -8,11 +8,11 @@ defmodule Day3Test do
   end
 
   test "sample1" do
-    assert Day3.solve1("sample1") == 12
+    assert Day3.solve1("sample1") == 4
   end
 
   test "star1" do
-    assert Day3.solve1("star1") == 4712
+    assert Day3.solve1("star1") == 111485
   end
 
   test "sample2" do
