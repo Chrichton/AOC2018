@@ -14,17 +14,18 @@ defmodule Day1 do
   defp find_first_duplicate(read_frequency_changes) do
     read_frequency_changes
     |> Stream.cycle()
-    |> Enum.reduce_while([0], fn curr, acc -> check_duplicate(curr, acc) end)
+    |> Enum.reduce_while({0, MapSet.new()}, fn curr, acc ->
+      check_duplicate(curr, acc)
+    end)
   end
 
-  defp check_duplicate(curr, acc) do
-    current_frequency = hd(acc)
+  defp check_duplicate(curr, {current_frequency, seen_frequencies}) do
     new_frequency = curr + current_frequency
 
-    if new_frequency in acc do
+    if new_frequency in seen_frequencies do
       {:halt, new_frequency}
     else
-      {:cont, [new_frequency | acc]}
+      {:cont, {new_frequency, MapSet.put(seen_frequencies, new_frequency)}}
     end
   end
 
