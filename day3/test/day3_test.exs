@@ -4,7 +4,7 @@ defmodule Day3Test do
   test "read input" do
     actual = Day3.read_input("sample1")
 
-    assert actual == nil
+    assert actual == [{{1, 3}, 1, 4, 4}, {{3, 1}, 2, 4, 4}, {{5, 5}, 3, 2, 2}]
   end
 
   test "sample1" do
@@ -16,10 +16,10 @@ defmodule Day3Test do
   end
 
   test "sample2" do
-    assert Day3.solve1("sample2") == 12
+    assert Day3.solve1("sample1") == 3
   end
 
   test "star2" do
-    assert Day3.solve2("star2") == "lufjygedpvfbhftxiwnaorzmq"
+    assert Day3.solve2("star1") == 113
   end
 end

@@ -5,25 +5,41 @@ defmodule Day3 do
     |> calc_square_inches()
   end
 
-  def calc_square_inches(points_and_sizes) do
-    points_and_sizes
-    |> Enum.reduce(Map.new(), fn {{_x,_y} = point, width, height}, map ->
-      create_points(point, width, height)
-      |> Enum.reduce(map, fn {_x,_y} = point, acc ->
-        Map.update(acc, point, 1, fn existing_value ->
-          existing_value + 1
+  def calc_square_inches(points_claim_ids_and_sizes) do
+    points_claim_ids_and_sizes
+    |> Enum.reduce(Map.new(), fn {{_x,_y} = point, claim_id, width, height}, map ->
+      create_points_with_claim_id(point, claim_id, width, height)
+      |> Enum.reduce(map, fn {{_x,_y} = point, claim_id}, acc ->
+        Map.update(acc, point, [claim_id], fn claim_ids ->
+          [claim_id | claim_ids] |> Enum.uniq()
         end)
       end)
     end)
     |> Map.values()
-    |> Enum.filter(fn value -> value > 1 end)
-    |> Enum.count()
+    |> then(fn claim_ids ->
+      overlapping_claim_ids = claim_ids
+      |> Enum.filter(fn claim_ids -> Enum.count(claim_ids) > 1 end)
+      |> Enum.flat_map(fn x -> x end)
+      |> MapSet.new()
+
+      remaining_claim_ids =
+        claim_ids
+        |> Enum.filter(fn claim_ids -> Enum.count(claim_ids) == 1 end)
+        |> Enum.flat_map(fn x -> x end)
+        |> MapSet.new()
+
+        [claim_id] =
+          MapSet.difference(remaining_claim_ids, overlapping_claim_ids)
+        |> MapSet.to_list()
+
+        claim_id
+    end)
   end
 
-  def create_points({x,y}, width, height) do
+  def create_points_with_claim_id({x,y}, claim_id, width, height) do
     for x <- x..(x + width - 1) do
       for y <- y..(y + height - 1) do
-        {x,y}
+        {{x,y}, claim_id}
       end
     end
     |> Enum.flat_map(fn x -> x end)
@@ -32,6 +48,7 @@ defmodule Day3 do
   def solve2(filename) do
     filename
     |> read_input()
+    |> calc_square_inches()
   end
 
   def read_input(filename) do
@@ -39,7 +56,10 @@ defmodule Day3 do
     |> String.split("\n", trim: true)
     |> Enum.map(fn line ->
       String.split(line, " ", trim: true)
-      |> then(fn [_id, _ ,positon, size] ->
+      |> then(fn [claim_id, _ ,positon, size] ->
+        claim_id = String.slice(claim_id, 1, String.length(claim_id) - 1)
+        |> String.to_integer()
+
         point = positon
         |> String.slice(0, String.length(positon) - 1)
         |> String.split(",")
@@ -55,7 +75,7 @@ defmodule Day3 do
           String.to_integer(y)]
         end)
 
-        {point, width, height}
+        {point, claim_id, width, height}
       end)
     end)
   end
