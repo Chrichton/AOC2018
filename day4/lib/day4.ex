@@ -27,8 +27,7 @@ defmodule Day4 do
 
       String.contains?(line, "wakes up") ->
          wake_up_time = parse_time(line)
-         diff_time = NaiveDateTime.diff(wake_up_time, asleep_time)
-         minutes = nil
+         minutes = calculate_minutes(asleep_time, wake_up_time)
          Map.update(map, guard_id, [minutes], fn minutes_list ->
           [minutes | minutes_list] end)
       end
@@ -60,9 +59,9 @@ defmodule Day4 do
     end)
   end
 
-  def calculate_minutes(sleep_time, wake_up_time) do
+  def calculate_minutes(asleep_time, wake_up_time) do
     wake_up_time
-    |> NaiveDateTime.diff(sleep_time)
+    |> NaiveDateTime.diff(asleep_time)
     |> div(60)
     |> then(fn minutes -> minutes - 1 end)
   end

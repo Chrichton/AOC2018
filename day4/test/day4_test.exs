@@ -8,10 +8,10 @@ defmodule Day4Test do
   end
 
   test "calculate minutes" do
-    sleep_time = ~N[1518-10-31 23:55:00]
-    wake_time = ~N[1518-11-01 00:05:00]
+    asleep_time = ~N[1518-10-31 23:55:00]
+    wakeup_time = ~N[1518-11-01 00:05:00]
 
-    diff = Day4.calculate_minutes(sleep_time, wake_time)
+    diff = Day4.calculate_minutes(asleep_time, wakeup_time)
 
     assert diff == 9
   end
