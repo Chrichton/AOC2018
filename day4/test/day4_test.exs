@@ -23,7 +23,7 @@ defmodule Day4Test do
   end
 
   test "sample1" do
-    assert Day4.solve1("sample1") == 4
+    assert Day4.solve1("sample1") == 240
   end
 
   test "star1" do

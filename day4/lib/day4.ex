@@ -3,6 +3,11 @@ defmodule Day4 do
   def solve1(filename) do
   filename
     |> read_input()
+    |> Enum.max_by(fn {_guard_id, minutes_list} ->
+      Enum.sum(minutes_list) end)
+    |> then(fn {guard_id, minutes_list} ->
+      max_minutes = Enum.max(minutes_list) - 1
+      guard_id * max_minutes end)
   end
 
   def solve2(filename) do
@@ -17,21 +22,20 @@ defmodule Day4 do
       cond do
         String.contains?(line, "Guard #") ->
           guard_id = parse_guard_line(line)
+
           {map, guard_id, asleep_time}
 
         String.contains?(line, "falls asleep") ->
-        asleep_time = parse_time(line)
-        {map, guard_id, asleep_time}
+          asleep_time = parse_time(line)
+
+          {map, guard_id, asleep_time}
 
         String.contains?(line, "wakes up") ->
           wake_up_time = parse_time(line)
           minutes = calculate_minutes(asleep_time, wake_up_time)
-
-          IO.inspect(guard_id, label: "Guard-Id")
-          IO.inspect(minutes, label: "minutes")
-
           new_map = Map.update(map, guard_id, [minutes], fn minutes_list ->
             [minutes | minutes_list] end)
+
           {new_map, guard_id, nil}
       end
     end)
