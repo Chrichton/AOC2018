@@ -59,4 +59,11 @@ defmodule Day4 do
       |> NaiveDateTime.from_iso8601!()
     end)
   end
+
+  def calculate_minutes(sleep_time, wake_up_time) do
+    wake_up_time
+    |> NaiveDateTime.diff(sleep_time)
+    |> div(60)
+    |> then(fn minutes -> minutes - 1 end)
+  end
 end

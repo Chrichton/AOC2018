@@ -7,6 +7,15 @@ defmodule Day4Test do
     assert actual == ~N[1518-11-01 00:05:00]
   end
 
+  test "calculate minutes" do
+    sleep_time = ~N[1518-10-31 23:55:00]
+    wake_time = ~N[1518-11-01 00:05:00]
+
+    diff = Day4.calculate_minutes(sleep_time, wake_time)
+
+    assert diff == 9
+  end
+
   test "sample1" do
     assert Day4.solve1("sample1") == 4
   end
