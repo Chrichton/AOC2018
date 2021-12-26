@@ -12,38 +12,39 @@ defmodule Day4 do
 
   def read_input(filename) do
     File.read!(filename)
-    filename
     |> String.split("\n", trim: true)
-    |> Enum.reduce({Map.new(), 0, nil}, fn line, {map, guard_id, asleep_time} ->
+    |> Enum.reduce({Map.new(), -1, nil}, fn line, {map, guard_id, asleep_time} ->
       cond do
+        String.contains?(line, "Guard #") ->
+          guard_id = parse_guard_line(line)
+          {map, guard_id, asleep_time}
 
-      String.contains?(line, "Guard #") ->
-        guard_id = parse_guard_lines(line)
-        {map, guard_id}
+        String.contains?(line, "falls asleep") ->
+        asleep_time = parse_time(line)
+        {map, guard_id, asleep_time}
 
-      String.contains?(line, "falls asleep") ->
-       asleep_time = parse_time(line)
-       {map, guard_id, asleep_time}
+        String.contains?(line, "wakes up") ->
+          wake_up_time = parse_time(line)
+          minutes = calculate_minutes(asleep_time, wake_up_time)
 
-      String.contains?(line, "wakes up") ->
-         wake_up_time = parse_time(line)
-         minutes = calculate_minutes(asleep_time, wake_up_time)
-         Map.update(map, guard_id, [minutes], fn minutes_list ->
-          [minutes | minutes_list] end)
+          IO.inspect(guard_id, label: "Guard-Id")
+          IO.inspect(minutes, label: "minutes")
+
+          new_map = Map.update(map, guard_id, [minutes], fn minutes_list ->
+            [minutes | minutes_list] end)
+          {new_map, guard_id, nil}
       end
     end)
+    |> elem(0)
   end
 
-  def parse_guard_lines(lines) do
-   lines
-    |> Enum.take(1)
-    |> then(fn [guard_id_line] ->
-      String.split(guard_id_line, "#")
+  def parse_guard_line(line) do
+    line
+      |> String.split("#")
       |> Enum.at(1)
       |> String.split(" ", trim: true)
       |> Enum.at(0)
       |> String.to_integer()
-    end)
   end
 
   def parse_time(line) do
@@ -63,6 +64,5 @@ defmodule Day4 do
     wake_up_time
     |> NaiveDateTime.diff(asleep_time)
     |> div(60)
-    |> then(fn minutes -> minutes - 1 end)
   end
 end

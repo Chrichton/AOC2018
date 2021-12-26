@@ -2,7 +2,7 @@ defmodule Day4Test do
   use ExUnit.Case
 
   test "parse_minutes" do
-    actual = Day4.parse_minutes("[1518-11-01 00:05] falls asleep")
+    actual = Day4.parse_time("[1518-11-01 00:05] falls asleep")
 
     assert actual == ~N[1518-11-01 00:05:00]
   end
@@ -13,7 +13,13 @@ defmodule Day4Test do
 
     diff = Day4.calculate_minutes(asleep_time, wakeup_time)
 
-    assert diff == 9
+    assert diff == 10
+  end
+
+  test "read input" do
+    actual = Day4.read_input("sample1")
+
+    assert actual == %{10 => [5, 25, 20], 99 => [10, 10, 10]}
   end
 
   test "sample1" do
