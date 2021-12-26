@@ -1,5 +1,4 @@
 defmodule Day4 do
-  use Timex
 
   def solve1(filename) do
   filename
@@ -15,12 +14,21 @@ defmodule Day4 do
     File.read!(filename)
     filename
     |> String.split("\n", trim: true)
-    |> Enum.reduce({Map.new(), 0}, fn line, {map, guard_id} ->
-      if String.contains?(line, "Guard #") do
+    |> Enum.reduce({Map.new(), 0, nil}, fn line, {map, guard_id, asleep_time} ->
+      cond do
+
+      String.contains?(line, "Guard #") ->
         guard_id = parse_guard_lines(line)
         {map, guard_id}
-      else
-         minutes = parse_minutes(line)
+
+      String.contains?(line, "falls asleep") ->
+       asleep_time = parse_time(line)
+       {map, guard_id, asleep_time}
+
+      String.contains?(line, "wakes up") ->
+         wake_up_time = parse_time(line)
+         diff_time = NaiveDateTime.diff(wake_up_time, asleep_time)
+         minutes = nil
          Map.update(map, guard_id, [minutes], fn minutes_list ->
           [minutes | minutes_list] end)
       end
@@ -39,7 +47,7 @@ defmodule Day4 do
     end)
   end
 
-  def parse_minutes(line) do
+  def parse_time(line) do
     line
     |> String.split("]", trim: true)
     |> Enum.at(0)
