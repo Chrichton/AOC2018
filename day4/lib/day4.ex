@@ -18,6 +18,7 @@ defmodule Day4 do
   def read_input(filename) do
     File.read!(filename)
     |> String.split("\n", trim: true)
+    |> Enum.sort()
     |> Enum.reduce({Map.new(), -1, nil}, fn line, {map, guard_id, asleep_time} ->
       cond do
         String.contains?(line, "Guard #") ->

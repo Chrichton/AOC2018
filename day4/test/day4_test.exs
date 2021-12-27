@@ -27,7 +27,7 @@ defmodule Day4Test do
   end
 
   test "star1" do
-    assert Day4.solve1("star1") == 111485
+    assert Day4.solve1("star1") == 9487 # too high
   end
 
   test "sample2" do
