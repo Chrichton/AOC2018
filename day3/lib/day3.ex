@@ -21,12 +21,10 @@ defmodule Day3 do
   end
 
   def create_points_with_claim_id({x, y}, claim_id, width, height) do
-    for x <- x..(x + width - 1) do
-      for y <- y..(y + height - 1) do
-        {{x, y}, claim_id}
-      end
+    for x <- x..(x + width - 1),
+        y <- y..(y + height - 1) do
+      {{x, y}, claim_id}
     end
-    |> Enum.flat_map(fn x -> x end)
   end
 
   def solve2(filename) do
