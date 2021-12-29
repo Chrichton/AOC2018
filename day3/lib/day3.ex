@@ -16,8 +16,7 @@ defmodule Day3 do
       end)
     end)
     |> Map.values()
-    |> Enum.filter(fn value -> value > 1 end)
-    |> Enum.count()
+    |> Enum.count(fn value -> value > 1 end)
   end
 
   def create_points_with_claim_id({x, y}, claim_id, width, height) do
