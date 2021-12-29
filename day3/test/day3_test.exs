@@ -12,11 +12,11 @@ defmodule Day3Test do
   end
 
   test "star1" do
-    assert Day3.solve1("star1") == 111485
+    assert Day3.solve1("star1") == 111_485
   end
 
   test "sample2" do
-    assert Day3.solve1("sample1") == 3
+    assert Day3.solve2("sample1") == 3
   end
 
   test "star2" do
