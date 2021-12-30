@@ -68,28 +68,10 @@ defmodule Day3 do
     File.read!(filename)
     |> String.split("\n", trim: true)
     |> Enum.map(fn line ->
-      String.split(line, " ", trim: true)
-      |> then(fn [claim_id, _, positon, size] ->
-        claim_id =
-          String.slice(claim_id, 1, String.length(claim_id) - 1)
-          |> String.to_integer()
-
-        point =
-          positon
-          |> String.slice(0, String.length(positon) - 1)
-          |> String.split(",")
-          |> then(fn [x, y] ->
-            {String.to_integer(x), String.to_integer(y)}
-          end)
-
-        [width, height] =
-          size
-          |> String.split("x")
-          |> then(fn [x, y] ->
-            [String.to_integer(x), String.to_integer(y)]
-          end)
-
-        {point, claim_id, width, height}
+      line
+      |> Parser.claim()
+      |> then(fn {:ok, [claim_id, left, right, width, height], _, _, _, _} ->
+        {{left, right}, claim_id, width, height}
       end)
     end)
   end
