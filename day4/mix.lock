@@ -1,6 +1,7 @@
 %{
   "combine": {:hex, :combine, "0.10.0", "eff8224eeb56498a2af13011d142c5e7997a80c8f5b97c499f84c841032e429f", [:mix], [], "hexpm", "1b1dbc1790073076580d0d1d64e42eae2366583e7aecd455d1215b0d16f2451b"},
   "gettext": {:hex, :gettext, "0.19.0", "6909d61b38bb33339558f128f8af5913d5d5fe304a770217bf352b1620fb7ec4", [:mix], [], "hexpm", "3f7a274f52ebda9bb6655dfeda3d6b0dc4537ae51ce41dcccc7f73ca7379ad5e"},
+  "nimble_parsec": {:hex, :nimble_parsec, "1.0.0", "54840f7a89aa3443c9280056742c329259d02787ef1da651f8591706518ceec6", [:mix], [], "hexpm", "6611313377408b6f19d4eddb1a53a342c70e336a21e9d09c38a9230775f1150d"},
   "timex": {:hex, :timex, "3.6.4", "137a49450b8d1f80efff82de4b78ab9ad2e367f06346825704310599733f338b", [:mix], [{:combine, "~> 0.10", [hex: :combine, repo: "hexpm", optional: false]}, {:gettext, "~> 0.10", [hex: :gettext, repo: "hexpm", optional: false]}, {:tzdata, "~> 0.1.8 or ~> 0.5 or ~> 1.0", [hex: :tzdata, repo: "hexpm", optional: false]}], "hexpm", "f6fce3f07ab67f525043af5b1f68ed5fa12a41b9dab95a9a98bb6acfb30ecadc"},
   "tzdata": {:hex, :tzdata, "0.1.201805", "feb76b48b1621e7f66a024798d3f293656a00296d426471939c22f4f08bc5c7d", [:mix], [], "hexpm", "0de5d69a9336152cbeb2f88c902e5109103eca672604e48290233c04e3fadeef"},
 }

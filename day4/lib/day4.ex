@@ -1,19 +1,20 @@
 defmodule Day4 do
-
   def solve1(filename) do
-  filename
+    filename
     |> read_input()
     |> Enum.max_by(fn {_guard_id, minutes_list} ->
-      Enum.sum(minutes_list) end)
+      Enum.sum(minutes_list)
+    end)
     |> then(fn {guard_id, minutes_list} ->
       max_minutes = Enum.max(minutes_list) - 1
-      guard_id * max_minutes end)
+      guard_id * max_minutes
+    end)
   end
 
   def solve2(filename) do
     filename
-      |> read_input()
-    end
+    |> read_input()
+  end
 
   def read_input(filename) do
     File.read!(filename)
@@ -34,8 +35,11 @@ defmodule Day4 do
         String.contains?(line, "wakes up") ->
           wake_up_time = parse_time(line)
           minutes = calculate_minutes(asleep_time, wake_up_time)
-          new_map = Map.update(map, guard_id, [minutes], fn minutes_list ->
-            [minutes | minutes_list] end)
+
+          new_map =
+            Map.update(map, guard_id, [minutes], fn minutes_list ->
+              [minutes | minutes_list]
+            end)
 
           {new_map, guard_id, nil}
       end
@@ -45,11 +49,11 @@ defmodule Day4 do
 
   def parse_guard_line(line) do
     line
-      |> String.split("#")
-      |> Enum.at(1)
-      |> String.split(" ", trim: true)
-      |> Enum.at(0)
-      |> String.to_integer()
+    |> String.split("#")
+    |> Enum.at(1)
+    |> String.split(" ", trim: true)
+    |> Enum.at(0)
+    |> String.to_integer()
   end
 
   def parse_time(line) do
@@ -59,8 +63,7 @@ defmodule Day4 do
     |> then(fn line ->
       line
       |> String.slice(1, String.length(line) - 1)
-      |> then(fn date_string -> date_string <> ":00"
-      end)
+      |> then(fn date_string -> date_string <> ":00" end)
       |> NaiveDateTime.from_iso8601!()
     end)
   end
