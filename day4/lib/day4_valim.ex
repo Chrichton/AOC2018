@@ -53,7 +53,7 @@ defmodule Day4Valim do
     |> group_by_id_and_date([])
   end
 
-  defp group_by_id_and_date([{date, _hour, _minute, :shift, id} | rest], groups) do
+  defp group_by_id_and_date([{date, _hour, _minute, {:shift, id}} | rest], groups) do
     {rest, ranges} = get_asleep_ranges(rest, [])
     group_by_id_and_date(rest, [{id, date, ranges} | groups])
   end
@@ -88,6 +88,24 @@ defmodule Day4Valim do
           into: FrequencyMap.new()
 
     FrequencyMap.most_frequent(frequency_map)
+  end
+
+  def part1(input) do
+    grouped_entries =
+      input
+      |> File.read!()
+      |> String.split("\n", trim: true)
+      |> group_by_id_and_date()
+
+    id_asleep_the_most =
+      grouped_entries
+      |> sum_asleep_times_by_id()
+      |> id_asleep_the_most()
+
+    minute_asleep_the_most_by_id =
+      minute_asleep_the_most_by_id(grouped_entries, id_asleep_the_most)
+
+    id_asleep_the_most * minute_asleep_the_most_by_id
   end
 
   # Parsing ----------------------------------------------------------------
