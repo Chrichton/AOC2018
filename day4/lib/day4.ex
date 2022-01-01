@@ -20,13 +20,7 @@ defmodule Day4 do
 
   def longest_minute(ranges) do
     ranges
-    |> Enum.reduce(Map.new(), fn range, acc ->
-      range
-      |> Enum.reduce(acc, fn minute, map ->
-        Map.update(map, minute, 1, fn current_value -> current_value + 1 end)
-      end)
-    end)
-    |> Enum.max_by(fn {_guard_id, count} -> count end)
+    |> max_id_and_count()
     |> elem(0)
   end
 
