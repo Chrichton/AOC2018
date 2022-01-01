@@ -33,6 +33,22 @@ defmodule Day4 do
   def solve2(filename) do
     filename
     |> read_input()
+    |> Enum.map(fn {guard_id, ranges} ->
+      {guard_id, max_id_and_count(ranges)}
+    end)
+    |> Enum.max_by(fn {_guard, {_minute, count}} -> count end)
+    |> then(fn {guard_id, {minute, _count}} -> guard_id * minute end)
+  end
+
+  def max_id_and_count(ranges) do
+    ranges
+    |> Enum.reduce(Map.new(), fn range, acc ->
+      range
+      |> Enum.reduce(acc, fn minute, map ->
+        Map.update(map, minute, 1, fn current_value -> current_value + 1 end)
+      end)
+    end)
+    |> Enum.max_by(fn {_guard_id, count} -> count end)
   end
 
   def read_input(filename) do
