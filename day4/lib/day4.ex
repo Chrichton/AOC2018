@@ -2,13 +2,32 @@ defmodule Day4 do
   def solve1(filename) do
     filename
     |> read_input()
-    |> Enum.max_by(fn {_guard_id, minutes_list} ->
-      Enum.sum(minutes_list)
+    |> id_with_longest_sleep_time()
+    |> then(fn {guard_id, ranges} ->
+      longest_minute = longest_minute(ranges)
+      guard_id * longest_minute
     end)
-    |> then(fn {guard_id, minutes_list} ->
-      max_minutes = Enum.max(minutes_list) - 1
-      guard_id * max_minutes
+  end
+
+  def id_with_longest_sleep_time(%{} = ids_to_ranges) do
+    ids_to_ranges
+    |> Enum.max_by(fn {_guard_id, ranges} ->
+      ranges
+      |> Enum.map(&Enum.count(&1))
+      |> Enum.sum()
     end)
+  end
+
+  def longest_minute(ranges) do
+    ranges
+    |> Enum.reduce(Map.new(), fn range, acc ->
+      range
+      |> Enum.reduce(acc, fn minute, map ->
+        Map.update(map, minute, 1, fn current_value -> current_value + 1 end)
+      end)
+    end)
+    |> Enum.max_by(fn {_guard_id, count} -> count end)
+    |> elem(0)
   end
 
   def solve2(filename) do
@@ -20,21 +39,21 @@ defmodule Day4 do
     File.read!(filename)
     |> String.split("\n", trim: true)
     |> Enum.sort()
-    |> Enum.reduce({Map.new(), -1, nil}, fn line, {map, guard_id, asleep_time} ->
+    |> Enum.reduce({Map.new(), -1, nil}, fn line, {map, guard_id, asleep_start} ->
       cond do
         String.contains?(line, "Guard #") ->
           guard_id = parse_guard_line(line)
 
-          {map, guard_id, asleep_time}
+          {map, guard_id, nil}
 
         String.contains?(line, "falls asleep") ->
-          asleep_time = parse_time(line)
+          asleep_start = parse_minutes(line)
 
-          {map, guard_id, asleep_time}
+          {map, guard_id, asleep_start}
 
         String.contains?(line, "wakes up") ->
-          wake_up_time = parse_time(line)
-          minutes = calculate_minutes(asleep_time, wake_up_time)
+          wake_up_time = parse_minutes(line)
+          minutes = Range.new(asleep_start, wake_up_time - 1)
 
           new_map =
             Map.update(map, guard_id, [minutes], fn minutes_list ->
@@ -56,15 +75,14 @@ defmodule Day4 do
     |> String.to_integer()
   end
 
-  def parse_time(line) do
+  def parse_minutes(line) do
     line
     |> String.split("]", trim: true)
     |> Enum.at(0)
     |> then(fn line ->
       line
-      |> String.slice(1, String.length(line) - 1)
-      |> then(fn date_string -> date_string <> ":00" end)
-      |> NaiveDateTime.from_iso8601!()
+      |> String.slice(String.length(line) - 2, 2)
+      |> String.to_integer()
     end)
   end
 

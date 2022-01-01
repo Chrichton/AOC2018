@@ -2,24 +2,35 @@ defmodule Day4Test do
   use ExUnit.Case
 
   test "parse_minutes" do
-    actual = Day4.parse_time("[1518-11-01 00:05] falls asleep")
+    actual = Day4.parse_minutes("[1518-11-01 00:05] falls asleep")
 
-    assert actual == ~N[1518-11-01 00:05:00]
-  end
-
-  test "calculate minutes" do
-    asleep_time = ~N[1518-10-31 23:55:00]
-    wakeup_time = ~N[1518-11-01 00:05:00]
-
-    diff = Day4.calculate_minutes(asleep_time, wakeup_time)
-
-    assert diff == 10
+    assert actual == 5
   end
 
   test "read input" do
     actual = Day4.read_input("sample1")
 
-    assert actual == %{10 => [5, 25, 20], 99 => [10, 10, 10]}
+    assert actual == %{
+             10 => [24..28, 30..54, 5..24],
+             99 => [45..54, 36..45, 40..49]
+           }
+  end
+
+  test "id_with_longest_sleep_time" do
+    map = %{
+      10 => [24..28, 30..54, 5..24],
+      99 => [45..54, 36..45, 40..49]
+    }
+
+    actual = Day4.id_with_longest_sleep_time(map)
+
+    assert actual == {10, [24..28, 30..54, 5..24]}
+  end
+
+  test "longest_minute" do
+    actual = Day4.longest_minute([24..28, 30..54, 5..24])
+
+    assert actual == 24
   end
 
   test "sample1" do
@@ -27,8 +38,7 @@ defmodule Day4Test do
   end
 
   test "star1" do
-    # too high
-    assert Day4.solve1("star1") == 9487
+    assert Day4.solve1("star1") == 8950
   end
 
   test "sample2" do
