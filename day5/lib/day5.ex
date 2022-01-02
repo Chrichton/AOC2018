@@ -31,6 +31,9 @@ defmodule Day5 do
   def solve2(filename) do
     filename
     |> read_input()
+    |> cancel_out_pairs_list()
+    |> Enum.map(&String.length/1)
+    |> Enum.min()
   end
 
   def cancel_out_pairs do
@@ -52,6 +55,14 @@ defmodule Day5 do
     |> Enum.reverse()
     |> Enum.join()
     |> cancel_out()
+  end
+
+  def cancel_out_pairs_list(polymer_string) do
+    cancel_out_pairs()
+    |> Enum.map(fn {_char1, _char2} = pair ->
+      cancel_out_pair(polymer_string, pair)
+    end)
+    |> Enum.uniq()
   end
 
   def read_input(filename) do

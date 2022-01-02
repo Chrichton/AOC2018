@@ -64,11 +64,17 @@ defmodule Day5Test do
     assert actual == "dbCBcD"
   end
 
+  test "cancel_out_pairs_list" do
+    actual = Day5.cancel_out_pairs_list("dabAcCaCBAcCcaDA")
+
+    assert actual == ["dbCBcD", "daCAcaDA", "daDA", "abCBAc", "dabCBAcaDA"]
+  end
+
   test "sample2" do
-    assert Day5.solve2("sample1") == nil
+    assert Day5.solve2("sample1") == 4
   end
 
   test "star2" do
-    assert Day5.solve2("star1") == nil
+    assert Day5.solve2("star1") == 4684
   end
 end
