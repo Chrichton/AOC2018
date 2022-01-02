@@ -23,11 +23,52 @@ defmodule Day5Test do
     assert Day5.solve1("star1") == 10886
   end
 
+  test "cancel_out_pairs" do
+    actual = Day5.cancel_out_pairs()
+
+    expected = [
+      {"A", "a"},
+      {"B", "b"},
+      {"C", "c"},
+      {"D", "d"},
+      {"E", "e"},
+      {"F", "f"},
+      {"G", "g"},
+      {"H", "h"},
+      {"I", "i"},
+      {"J", "j"},
+      {"K", "k"},
+      {"L", "l"},
+      {"M", "m"},
+      {"N", "n"},
+      {"O", "o"},
+      {"P", "p"},
+      {"Q", "q"},
+      {"R", "r"},
+      {"S", "s"},
+      {"T", "t"},
+      {"U", "u"},
+      {"V", "v"},
+      {"W", "w"},
+      {"X", "x"},
+      {"Y", "y"},
+      {"Z", "z"}
+    ]
+
+    assert actual == expected
+  end
+
+  test "cancel_out_pair" do
+    actual = Day5.cancel_out_pair("dabAcCaCBAcCcaDA", {"A", "a"})
+
+    assert actual == "dbCBcD"
+  end
+
   test "sample2" do
-    assert Day5.solve2("sample1") == 0
+    assert Day5.solve2("sample1") == nil
   end
 
   test "star2" do
-    assert Day5.solve2("star1") == 0
+    assert Day5.solve2("star1") == nil
   end
 end
