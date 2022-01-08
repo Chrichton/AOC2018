@@ -39,7 +39,7 @@ defmodule Day6 do
     end
   end
 
-  def create_islands(distances_maps, inner_points) do
+  def islands(distances_maps, inner_points) do
     inner_points
     |> Enum.reduce(Map.new(), fn {x, y}, map ->
       case find_nearest_point({x, y}, distances_maps) do
@@ -48,8 +48,6 @@ defmodule Day6 do
       end
     end)
   end
-
-  # {0, 1} => %{{0, 1} => 0, {3, 5} => 7},
 
   def find_nearest_point({x, y} = _point, distances_maps) do
     [{{x_nearest, y_nearest}, distance1} | [{{_x2, _y2}, distance2} | _rest]] =
@@ -64,15 +62,14 @@ defmodule Day6 do
       else: {x_nearest, y_nearest}
   end
 
-  def create_distances_maps(points, inner_points) do
+  def distances_maps(points, inner_points) do
     points
     |> Enum.reduce(Map.new(), fn {x, y}, map ->
-      distances = create_distances_map({x, y}, inner_points)
-      Map.put(map, {x, y}, distances)
+      Map.put(map, {x, y}, distances_map({x, y}, inner_points))
     end)
   end
 
-  def create_distances_map({x, y} = _point, inner_points) do
+  def distances_map({x, y} = _point, inner_points) do
     inner_points
     |> Enum.reduce(Map.new(), fn {xi, yi}, map ->
       distance = manhattan_distance({x, y}, {xi, yi})
