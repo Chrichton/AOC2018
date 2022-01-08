@@ -50,14 +50,13 @@ defmodule Day6Test do
     assert actual == nil
   end
 
-  test "islands" do
-    # points = [{1, 1}, {1, 6}, {8, 3}, {3, 4}, {5, 5}, {8, 9}]
+  test "coordinates_view" do
     points = [{0, 0}, {0, 3}, {0, 4}]
     inner_points = Day6.inner_points(points)
     distances_maps = Day6.distances_maps(points, inner_points)
 
     actual =
-      Day6.islands(
+      Day6.coordinates_view(
         distances_maps,
         inner_points
       )
@@ -65,15 +64,15 @@ defmodule Day6Test do
     assert actual == %{
              {0, 0} => {0, 0},
              {0, 1} => {0, 0},
-             {0, 2} => {-1, -1},
+             {0, 2} => nil,
              {0, 3} => {0, 3},
              {0, 4} => {0, 4}
            }
   end
 
-  # test "sample1" do
-  #   assert Day6.solve1("sample1") == 10
-  # end
+  test "sample1" do
+    assert Day6.solve1("sample1") == 17
+  end
 
   # test "star1" do
   #   assert Day6.solve1("star1") == 10886

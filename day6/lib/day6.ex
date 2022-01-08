@@ -4,6 +4,7 @@ defmodule Day6 do
   def solve1(filename) do
     filename
     |> read_input()
+    |> islands()
   end
 
   def parse_coordinate(string) do
@@ -45,11 +46,30 @@ defmodule Day6 do
     {min_x, max_x, min_y, max_y}
   end
 
-  def islands(distances_maps, inner_points) do
+  def islands(points) do
+    dimensions = Day6.dimensions(points)
+    inner_points = Day6.inner_points(points)
+    distances_maps = Day6.distances_maps(points, inner_points)
+    coordinates_map = Day6.coordinates_view(distances_maps, inner_points)
+
+    visualize_puzzle(coordinates_map, dimensions)
+    |> IO.puts()
+
+    coordinates_map
+    |> Map.filter(fn {point, value} ->
+      value != nil && not border_point?(point, dimensions)
+    end)
+    |> Map.values()
+
+    # |> Enum.max()
+    # |> Enum.sum()
+  end
+
+  def coordinates_view(distances_maps, inner_points) do
     inner_points
     |> Enum.reduce(Map.new(), fn {x, y}, map ->
       case find_nearest_point({x, y}, distances_maps) do
-        nil -> Map.put(map, {x, y}, {-1, -1})
+        nil -> Map.put(map, {x, y}, nil)
         {x_nearest, y_nearest} -> Map.put(map, {x, y}, {x_nearest, y_nearest})
       end
     end)
@@ -97,11 +117,28 @@ defmodule Day6 do
 
   def manhattan_distance({x1, y1}, {x2, y2}), do: abs(x1 - x2) + abs(y1 - y2)
 
+  # def border_points({min_x, max_x, min_y, max_y} = dimensions) do
+  #   for x <- min_x..max_x,
+  #     for y <- min_y..max_y,
+  #       border_point?({x, y}, dimensions),
+  #       do: {x, y}
+  # end
+
   def border_point?(
         {x, y} = _point,
         {min_x, max_x, min_y, max_y} = _dimensions
       ),
       do: x == min_x or x == max_x or y == min_y or y == max_y
+
+  def visualize_puzzle(coordinates_map, {min_x, max_x, min_y, max_y}) do
+    for y <- min_y..max_y do
+      for x <- min_x..max_x do
+        (coordinates_map[{x, y}] |> inspect()) <> " "
+      end
+      |> Enum.join()
+    end
+    |> Enum.join("\n")
+  end
 
   def solve2(filename) do
     filename
