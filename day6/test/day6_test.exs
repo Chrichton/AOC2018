@@ -52,7 +52,7 @@ defmodule Day6Test do
 
   test "islands" do
     # points = [{1, 1}, {1, 6}, {8, 3}, {3, 4}, {5, 5}, {8, 9}]
-    points = [{0, 0}, {0, 4}]
+    points = [{0, 0}, {0, 3}, {0, 4}]
     inner_points = Day6.inner_points(points)
     distances_maps = Day6.distances_maps(points, inner_points)
 
@@ -66,7 +66,7 @@ defmodule Day6Test do
              {0, 0} => {0, 0},
              {0, 1} => {0, 0},
              {0, 2} => {-1, -1},
-             {0, 3} => {0, 4},
+             {0, 3} => {0, 3},
              {0, 4} => {0, 4}
            }
   end

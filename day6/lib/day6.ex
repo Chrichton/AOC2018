@@ -50,16 +50,24 @@ defmodule Day6 do
   end
 
   def find_nearest_point({x, y} = _point, distances_maps) do
-    [{{x_nearest, y_nearest}, distance1} | [{{_x2, _y2}, distance2} | _rest]] =
+    points_distances =
       distances_maps
       |> Enum.map(fn {key, distance_map} ->
         {key, distance_map[{x, y}]}
       end)
-      |> Enum.sort_by(fn {_key, value} -> value end)
 
-    if distance1 == distance2,
-      do: nil,
-      else: {x_nearest, y_nearest}
+    distances =
+      points_distances
+      |> Enum.map(fn {{_x, _y}, distance} -> distance end)
+
+    if distances == distances |> Enum.uniq() do
+      points_distances
+      |> Enum.sort_by(fn {{_xs, _ys}, value} -> value end)
+      |> hd()
+      |> elem(0)
+    else
+      nil
+    end
   end
 
   def distances_maps(points, inner_points) do
