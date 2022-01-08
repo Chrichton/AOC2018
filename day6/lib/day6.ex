@@ -56,18 +56,22 @@ defmodule Day6 do
         {key, distance_map[{x, y}]}
       end)
 
-    distances =
-      points_distances
-      |> Enum.map(fn {{_x, _y}, distance} -> distance end)
-
-    if distances == distances |> Enum.uniq() do
+    if duplicate_distances(points_distances) do
+      nil
+    else
       points_distances
       |> Enum.sort_by(fn {{_xs, _ys}, value} -> value end)
       |> hd()
       |> elem(0)
-    else
-      nil
     end
+  end
+
+  def duplicate_distances(points_distances) do
+    distances =
+      points_distances
+      |> Enum.map(fn {{_x, _y}, distance} -> distance end)
+
+    distances != distances |> Enum.uniq()
   end
 
   def distances_maps(points, inner_points) do
