@@ -13,6 +13,15 @@ defmodule Day6 do
   end
 
   def inner_points(points) do
+    {min_x, max_x, min_y, max_y} = dimensions(points)
+
+    for x <- min_x..max_x,
+        y <- min_y..max_y do
+      {x, y}
+    end
+  end
+
+  def dimensions(points) do
     min_x =
       points
       |> Enum.min_by(fn {x, _y} -> x end)
@@ -33,10 +42,7 @@ defmodule Day6 do
       |> Enum.max_by(fn {_x, y} -> y end)
       |> elem(1)
 
-    for x <- min_x..max_x,
-        y <- min_y..max_y do
-      {x, y}
-    end
+    {min_x, max_x, min_y, max_y}
   end
 
   def islands(distances_maps, inner_points) do
@@ -56,7 +62,7 @@ defmodule Day6 do
         {key, distance_map[{x, y}]}
       end)
 
-    if duplicate_distances(points_distances) do
+    if duplicate_distances?(points_distances) do
       nil
     else
       points_distances
@@ -66,7 +72,7 @@ defmodule Day6 do
     end
   end
 
-  def duplicate_distances(points_distances) do
+  def duplicate_distances?(points_distances) do
     distances =
       points_distances
       |> Enum.map(fn {{_x, _y}, distance} -> distance end)
@@ -90,6 +96,12 @@ defmodule Day6 do
   end
 
   def manhattan_distance({x1, y1}, {x2, y2}), do: abs(x1 - x2) + abs(y1 - y2)
+
+  def border_point?(
+        {x, y} = _point,
+        {min_x, max_x, min_y, max_y} = _dimensions
+      ),
+      do: x == min_x or x == max_x or y == min_y or y == max_y
 
   def solve2(filename) do
     filename
