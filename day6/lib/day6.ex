@@ -52,17 +52,18 @@ defmodule Day6 do
     distances_maps = Day6.distances_maps(points, inner_points)
     coordinates_map = Day6.coordinates_view(distances_maps, inner_points)
 
-    visualize_puzzle(coordinates_map, dimensions)
-    |> IO.puts()
+    # visualize_puzzle(coordinates_map, dimensions)
+    # |> IO.puts()
 
     coordinates_map
     |> Map.filter(fn {point, value} ->
       value != nil && not border_point?(point, dimensions)
     end)
     |> Map.values()
-
-    # |> Enum.max()
-    # |> Enum.sum()
+    |> Enum.frequencies()
+    |> Map.values()
+    |> IO.inspect()
+    |> Enum.max()
   end
 
   def coordinates_view(distances_maps, inner_points) do
@@ -76,28 +77,16 @@ defmodule Day6 do
   end
 
   def find_nearest_point({x, y} = _point, distances_maps) do
-    points_distances =
+    [{{x_nearest, y_nearest}, distance1} | [{{_x2, _y2}, distance2} | _rest]] =
       distances_maps
       |> Enum.map(fn {key, distance_map} ->
         {key, distance_map[{x, y}]}
       end)
+      |> Enum.sort_by(fn {_key, value} -> value end)
 
-    if duplicate_distances?(points_distances) do
-      nil
-    else
-      points_distances
-      |> Enum.sort_by(fn {{_xs, _ys}, value} -> value end)
-      |> hd()
-      |> elem(0)
-    end
-  end
-
-  def duplicate_distances?(points_distances) do
-    distances =
-      points_distances
-      |> Enum.map(fn {{_x, _y}, distance} -> distance end)
-
-    distances != distances |> Enum.uniq()
+    if distance1 == distance2,
+      do: nil,
+      else: {x_nearest, y_nearest}
   end
 
   def distances_maps(points, inner_points) do

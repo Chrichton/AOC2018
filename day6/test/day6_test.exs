@@ -38,7 +38,7 @@ defmodule Day6Test do
            }
   end
 
-  test "find_nearest_point" do
+  test "find_nearest_cpoint" do
     points = [{0, 0}, {0, 4}]
     inner_points = Day6.inner_points(points)
     distances_maps = Day6.distances_maps(points, inner_points)
@@ -64,7 +64,7 @@ defmodule Day6Test do
     assert actual == %{
              {0, 0} => {0, 0},
              {0, 1} => {0, 0},
-             {0, 2} => nil,
+             {0, 2} => {0, 3},
              {0, 3} => {0, 3},
              {0, 4} => {0, 4}
            }
@@ -74,9 +74,9 @@ defmodule Day6Test do
     assert Day6.solve1("sample1") == 17
   end
 
-  # test "star1" do
-  #   assert Day6.solve1("star1") == 10886
-  # end
+  test "star1" do
+    assert Day6.solve1("star1") == 3969
+  end
 
   # test "sample2" do
   #   assert Day6.solve2("sample1") == 4
