@@ -78,11 +78,26 @@ defmodule Day6Test do
     assert Day6.solve1("star1") == 3969
   end
 
-  # test "sample2" do
-  #   assert Day6.solve2("sample1") == 4
-  # end
+  test "sum_of_distances_to_point" do
+    points = [{1, 1}, {1, 6}, {8, 3}, {3, 4}, {5, 5}, {8, 9}]
+    actual = Day6.sum_of_distances_to_point({4, 3}, points)
 
-  # test "star2" do
-  #   assert Day6.solve2("star1") == 4684
-  # end
+    assert actual == 30
+  end
+
+  test "sample2" do
+    actual =
+      Day6.solve2("sample1")
+      |> Enum.count(fn {_point, distance} -> distance < 32 end)
+
+    assert actual == 16
+  end
+
+  test "star2" do
+    actual =
+      Day6.solve2("star1")
+      |> Enum.count(fn {_point, distance} -> distance < 10000 end)
+
+    assert actual == 42123
+  end
 end

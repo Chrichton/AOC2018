@@ -62,7 +62,6 @@ defmodule Day6 do
     |> Map.values()
     |> Enum.frequencies()
     |> Map.values()
-    |> IO.inspect()
     |> Enum.max()
   end
 
@@ -106,13 +105,6 @@ defmodule Day6 do
 
   def manhattan_distance({x1, y1}, {x2, y2}), do: abs(x1 - x2) + abs(y1 - y2)
 
-  # def border_points({min_x, max_x, min_y, max_y} = dimensions) do
-  #   for x <- min_x..max_x,
-  #     for y <- min_y..max_y,
-  #       border_point?({x, y}, dimensions),
-  #       do: {x, y}
-  # end
-
   def border_point?(
         {x, y} = _point,
         {min_x, max_x, min_y, max_y} = _dimensions
@@ -129,9 +121,26 @@ defmodule Day6 do
     |> Enum.join("\n")
   end
 
+  # Gold Star ----------------------------------------------------------------
+
+  def sum_of_distances(points) do
+    {min_x, max_x, min_y, max_y} = dimensions(points)
+
+    for x <- min_x..max_x,
+        y <- min_y..max_y,
+        do: {{x, y}, sum_of_distances_to_point({x, y}, points)}
+  end
+
+  def sum_of_distances_to_point({_x, _y} = point, points) do
+    for {x, y} <- points, reduce: 0 do
+      acc -> acc + manhattan_distance({x, y}, point)
+    end
+  end
+
   def solve2(filename) do
     filename
     |> read_input()
+    |> sum_of_distances()
   end
 
   def read_input(filename) do
