@@ -29,7 +29,6 @@ defmodule Day7 do
   def to_graph(edges_list) do
     edges_list
     |> Enum.reduce(Graph.new(), fn {from_node, to_node}, graph ->
-      IO.inspect(from_node, label: "from_node\n")
       Graph.add_edge(graph, from_node, to_node, weight: from_node)
     end)
   end
