@@ -5,18 +5,26 @@ defmodule Day7Test do
     actual = Day7.read_input("sample")
 
     expected = [
-      {"C", "A"},
-      {"C", "F"},
-      {"A", "B"},
-      {"A", "D"},
-      {"B", "E"},
-      {"D", "E"},
-      {"F", "E"}
+      {67, 65},
+      {67, 70},
+      {65, 66},
+      {65, 68},
+      {66, 69},
+      {68, 69},
+      {70, 69}
     ]
   end
 
+  test "to_graph" do
+    from_to_nodes = Day7.read_input("sample")
+
+    actual = Day7.to_graph(from_to_nodes)
+
+    assert Graph.to_edgelist(actual) == {:ok, "66 69\n65 66\n65 68\n67 65\n67 70\n68 69\n70 69\n"}
+  end
+
   test "sample1" do
-    assert Day7.solve1("sample") == 17
+    assert Day7.solve1("sample") == "CABDFE"
   end
 
   test "star1" do

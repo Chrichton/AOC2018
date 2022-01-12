@@ -4,6 +4,15 @@ defmodule Day7 do
   def solve1(filename) do
     filename
     |> read_input()
+    |> to_graph()
+    |> Graph.Reducers.Bfs.reduce([], fn v, acc -> {:next, [v | acc]} end)
+    |> Enum.reverse()
+  end
+
+  def read_input(filename) do
+    File.read!(filename)
+    |> String.split("\n")
+    |> Enum.map(&parse_input/1)
   end
 
   def parse_input(string) do
@@ -17,10 +26,12 @@ defmodule Day7 do
     |> read_input()
   end
 
-  def read_input(filename) do
-    File.read!(filename)
-    |> String.split("\n")
-    |> Enum.map(&parse_input/1)
+  def to_graph(edges_list) do
+    edges_list
+    |> Enum.reduce(Graph.new(), fn {from_node, to_node}, graph ->
+      IO.inspect(from_node, label: "from_node\n")
+      Graph.add_edge(graph, from_node, to_node, weight: from_node)
+    end)
   end
 
   # Parsing ----------------------------------------------------------------
@@ -28,9 +39,9 @@ defmodule Day7 do
   defparsecp(
     :parsec_input,
     ignore(string("Step "))
-    |> ascii_string([?A..?Z], 1)
+    |> ascii_char([?A..?Z])
     |> ignore(string(" must be finished before step "))
-    |> ascii_string([?A..?Z], 1)
+    |> ascii_char([?A..?Z])
     |> ignore(string(" can begin."))
   )
 end
