@@ -13,6 +13,8 @@ defmodule Day7Test do
       {68, 69},
       {70, 69}
     ]
+
+    assert actual == expected
   end
 
   test "to_graph" do
@@ -23,6 +25,14 @@ defmodule Day7Test do
     assert Graph.to_edgelist(actual) == {:ok, "66 69\n65 66\n65 68\n67 65\n67 70\n68 69\n70 69\n"}
 
     assert Graph.is_acyclic?(actual)
+  end
+
+  test "find_root" do
+    graph =
+      Day7.read_input("sample")
+      |> Day7.to_graph()
+
+    assert Day7.find_root(graph) == ?C
   end
 
   test "sample1" do

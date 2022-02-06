@@ -33,6 +33,12 @@ defmodule Day7 do
     end)
   end
 
+  def find_root(graph) do
+    graph
+    |> Graph.vertices()
+    |> Enum.find(&(Graph.reaching_neighbors(graph, [&1]) == []))
+  end
+
   # Parsing ----------------------------------------------------------------
 
   defparsecp(
