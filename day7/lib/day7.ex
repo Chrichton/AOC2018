@@ -35,15 +35,20 @@ defmodule Day7 do
   def find_root(graph) do
     graph
     |> Graph.vertices()
-    |> Enum.find(&(Graph.in_neighbors(graph, &1) == []))
+    |> Enum.find(&root?(graph, &1))
   end
 
+  def root?(graph, vertex), do: Graph.in_neighbors(graph, vertex) == []
+
   def reachable_neighbors(graph, vertex, visited_vertices) do
-    if Graph.in_neighbors(graph, vertex) in visited_vertices do
-      Graph.out_neighbors(graph, vertex)
-    else
-      []
-    end
+    visited_vertices = [vertex | visited_vertices]
+
+    graph
+    |> Graph.out_neighbors(vertex)
+    |> Enum.filter(fn out_neighbor ->
+      Graph.in_neighbors(graph, out_neighbor)
+      |> Enum.all?(&(&1 in visited_vertices))
+    end)
   end
 
   def get_ordered_steps(graph) do

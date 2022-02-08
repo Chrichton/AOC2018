@@ -40,9 +40,9 @@ defmodule Day7Test do
       Day7.read_input("sample")
       |> Day7.to_graph()
 
-    # assert Day7.reachable_neighbors(graph, ?C, []) == 'AF'
-    # assert Day7.reachable_neighbors(graph, ?B, []) == ''
-    # assert Day7.reachable_neighbors(graph, ?B, [?D, ?F]) == 'E'
+    assert Day7.reachable_neighbors(graph, ?C, []) == 'AF'
+    assert Day7.reachable_neighbors(graph, ?B, []) == ''
+    assert Day7.reachable_neighbors(graph, ?B, [?D, ?F]) == 'E'
   end
 
   test "sample1" do
