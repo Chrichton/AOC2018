@@ -5,8 +5,7 @@ defmodule Day7 do
     filename
     |> read_input()
     |> to_graph()
-    |> Graph.Reducers.Bfs.reduce([], fn v, acc -> {:next, [v | acc]} end)
-    |> Enum.reverse()
+    |> get_ordered_steps()
   end
 
   def read_input(filename) do
@@ -36,7 +35,39 @@ defmodule Day7 do
   def find_root(graph) do
     graph
     |> Graph.vertices()
-    |> Enum.find(&(Graph.reaching_neighbors(graph, [&1]) == []))
+    |> Enum.find(&(Graph.in_neighbors(graph, &1) == []))
+  end
+
+  def reachable_neighbors(graph, vertex, visited_vertices) do
+    if Graph.in_neighbors(graph, vertex) in visited_vertices do
+      Graph.out_neighbors(graph, vertex)
+    else
+      []
+    end
+  end
+
+  def get_ordered_steps(graph) do
+    graph
+    |> find_root()
+    |> then(fn root -> get_ordered_steps_recusive(graph, [root], []) end)
+  end
+
+  def get_ordered_steps_recusive(_graph, [], steps) do
+    steps
+    |> IO.inspect()
+  end
+
+  def get_ordered_steps_recusive(graph, [edge | next_edges], steps) do
+    IO.inspect(edge)
+
+    neighbors = Graph.out_neighbors(graph, edge)
+
+    next_edges =
+      (next_edges ++ neighbors)
+      |> Enum.uniq()
+      |> Enum.sort()
+
+    get_ordered_steps_recusive(graph, next_edges, steps ++ [edge])
   end
 
   # Parsing ----------------------------------------------------------------
