@@ -47,17 +47,20 @@ defmodule Day7Test do
 
   test "sample1" do
     Day7.solve1("sample")
-    # assert Day7.solve1("sample") == "CABDFE"
+    assert Day7.solve1("sample") == "CABDFE"
   end
 
+  @tag :skip
   test "star1" do
     assert Day7.solve1("star") == 3969
   end
 
+  @tag :skip
   test "sample2" do
     assert Day7.solve2("sample") == 17
   end
 
+  @tag :skip
   test "star2" do
     assert Day7.solve2("star") == 3969
   end
