@@ -40,6 +40,17 @@ defmodule Day7Test do
       Day7.read_input("sample")
       |> Day7.to_graph()
 
+    # inputs_and_outputs = [
+    #   {{?C, []}, 'AF'},
+    #   {{?B, []}, ''},
+    #   {{?B, [?D, ?F]}, 'E'}
+    # ]
+
+    # for {{vertex, visited_vertices}, expected_output} <- inputs_and_outputs do
+    #   actual = Day7.reachable_neighbors(graph, vertex, visited_vertices)
+    #   assert actual == expected_output
+    # end
+
     assert Day7.reachable_neighbors(graph, ?C, []) == 'AF'
     assert Day7.reachable_neighbors(graph, ?B, []) == ''
     assert Day7.reachable_neighbors(graph, ?B, [?D, ?F]) == 'E'

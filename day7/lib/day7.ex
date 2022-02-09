@@ -5,7 +5,7 @@ defmodule Day7 do
     filename
     |> read_input()
     |> to_graph()
-    |> get_ordered_steps()
+    |> get_ordered_vertices()
   end
 
   def read_input(filename) do
@@ -51,18 +51,18 @@ defmodule Day7 do
     end)
   end
 
-  def get_ordered_steps(graph) do
+  def get_ordered_vertices(graph) do
     graph
     |> find_root()
-    |> then(fn root -> get_ordered_steps_recusive(graph, [root], []) end)
+    |> then(fn root -> get_ordered_vertices_recusive(graph, [root], []) end)
   end
 
-  def get_ordered_steps_recusive(_graph, [], steps) do
-    steps
+  def get_ordered_vertices_recusive(_graph, [], visited_vertices) do
+    visited_vertices
     |> IO.inspect()
   end
 
-  def get_ordered_steps_recusive(graph, [edge | next_edges], steps) do
+  def get_ordered_vertices_recusive(graph, [edge | next_edges], visited_vertices) do
     IO.inspect(edge)
 
     neighbors = Graph.out_neighbors(graph, edge)
@@ -72,7 +72,7 @@ defmodule Day7 do
       |> Enum.uniq()
       |> Enum.sort()
 
-    get_ordered_steps_recusive(graph, next_edges, steps ++ [edge])
+    get_ordered_vertices_recusive(graph, next_edges, visited_vertices ++ [edge])
   end
 
   # Parsing ----------------------------------------------------------------
