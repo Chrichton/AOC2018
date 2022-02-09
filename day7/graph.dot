@@ -1,0 +1,129 @@
+strict digraph {
+    66
+    76
+    78
+    85
+    90
+    77
+    89
+    88
+    86
+    84
+    87
+    73
+    71
+    80
+    82
+    65
+    67
+    72
+    74
+    68
+    79
+    70
+    69
+    75
+    83
+    81
+    66 -> 89 [weight=66]
+    66 -> 88 [weight=66]
+    76 -> 78 [weight=76]
+    76 -> 87 [weight=76]
+    76 -> 73 [weight=76]
+    85 -> 76 [weight=85]
+    85 -> 84 [weight=85]
+    85 -> 73 [weight=85]
+    85 -> 80 [weight=85]
+    85 -> 69 [weight=85]
+    90 -> 78 [weight=90]
+    90 -> 85 [weight=90]
+    90 -> 84 [weight=90]
+    90 -> 80 [weight=90]
+    90 -> 65 [weight=90]
+    90 -> 79 [weight=90]
+    90 -> 69 [weight=90]
+    77 -> 90 [weight=77]
+    77 -> 73 [weight=77]
+    77 -> 80 [weight=77]
+    77 -> 82 [weight=77]
+    77 -> 65 [weight=77]
+    77 -> 79 [weight=77]
+    89 -> 76 [weight=89]
+    89 -> 78 [weight=89]
+    89 -> 84 [weight=89]
+    89 -> 73 [weight=89]
+    89 -> 79 [weight=89]
+    88 -> 70 [weight=88]
+    88 -> 69 [weight=88]
+    86 -> 71 [weight=86]
+    86 -> 72 [weight=86]
+    86 -> 70 [weight=86]
+    86 -> 81 [weight=86]
+    84 -> 78 [weight=84]
+    87 -> 78 [weight=87]
+    87 -> 84 [weight=87]
+    73 -> 78 [weight=73]
+    73 -> 84 [weight=73]
+    73 -> 87 [weight=73]
+    73 -> 69 [weight=73]
+    71 -> 85 [weight=71]
+    71 -> 90 [weight=71]
+    71 -> 80 [weight=71]
+    71 -> 69 [weight=71]
+    80 -> 78 [weight=80]
+    80 -> 87 [weight=80]
+    80 -> 73 [weight=80]
+    82 -> 76 [weight=82]
+    82 -> 73 [weight=82]
+    82 -> 79 [weight=82]
+    65 -> 84 [weight=65]
+    65 -> 87 [weight=65]
+    65 -> 80 [weight=65]
+    65 -> 69 [weight=65]
+    67 -> 85 [weight=67]
+    67 -> 87 [weight=67]
+    67 -> 73 [weight=67]
+    67 -> 71 [weight=67]
+    67 -> 80 [weight=67]
+    67 -> 65 [weight=67]
+    67 -> 72 [weight=67]
+    67 -> 74 [weight=67]
+    67 -> 69 [weight=67]
+    72 -> 88 [weight=72]
+    72 -> 82 [weight=72]
+    74 -> 78 [weight=74]
+    74 -> 82 [weight=74]
+    74 -> 65 [weight=74]
+    74 -> 79 [weight=74]
+    68 -> 76 [weight=68]
+    68 -> 79 [weight=68]
+    68 -> 70 [weight=68]
+    79 -> 76 [weight=79]
+    79 -> 85 [weight=79]
+    79 -> 84 [weight=79]
+    79 -> 73 [weight=79]
+    79 -> 65 [weight=79]
+    70 -> 89 [weight=70]
+    70 -> 80 [weight=70]
+    70 -> 79 [weight=70]
+    70 -> 69 [weight=70]
+    69 -> 78 [weight=69]
+    69 -> 84 [weight=69]
+    69 -> 87 [weight=69]
+    75 -> 76 [weight=75]
+    75 -> 77 [weight=75]
+    75 -> 84 [weight=75]
+    75 -> 87 [weight=75]
+    75 -> 67 [weight=75]
+    75 -> 79 [weight=75]
+    75 -> 83 [weight=75]
+    83 -> 87 [weight=83]
+    83 -> 73 [weight=83]
+    83 -> 80 [weight=83]
+    83 -> 68 [weight=83]
+    83 -> 81 [weight=83]
+    81 -> 87 [weight=81]
+    81 -> 80 [weight=81]
+    81 -> 82 [weight=81]
+    81 -> 79 [weight=81]
+}

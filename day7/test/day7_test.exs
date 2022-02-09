@@ -27,12 +27,12 @@ defmodule Day7Test do
     assert Graph.is_acyclic?(actual)
   end
 
-  test "find_root" do
+  test "find_roots" do
     graph =
       Day7.read_input("sample")
       |> Day7.to_graph()
 
-    assert Day7.find_root(graph) == ?C
+    assert Day7.find_roots(graph) == [?C]
   end
 
   test "reachable_neighbors" do
@@ -60,9 +60,8 @@ defmodule Day7Test do
     assert Day7.solve1("sample") == 'CABDFE'
   end
 
-  @tag :skip
   test "star1" do
-    assert Day7.solve1("star") == 3969
+    assert Day7.solve1("star") == 'BKCJMSDVGHQRXFYZOAULPIEWTN'
   end
 
   @tag :skip

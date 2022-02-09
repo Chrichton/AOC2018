@@ -32,10 +32,10 @@ defmodule Day7 do
     end)
   end
 
-  def find_root(graph) do
+  def find_roots(graph) do
     graph
     |> Graph.vertices()
-    |> Enum.find(&root?(graph, &1))
+    |> Enum.filter(&(Graph.in_neighbors(graph, &1) == []))
   end
 
   def root?(graph, vertex), do: Graph.in_neighbors(graph, vertex) == []
@@ -47,14 +47,17 @@ defmodule Day7 do
     |> Graph.out_neighbors(vertex)
     |> Enum.filter(fn out_neighbor ->
       Graph.in_neighbors(graph, out_neighbor)
-      |> Enum.all?(&(&1 in visited_vertices))
+      |> Enum.all?(fn in_neighbor ->
+        IO.inspect({out_neighbor, in_neighbor})
+        in_neighbor in visited_vertices
+      end)
     end)
   end
 
   def get_ordered_vertices(graph) do
     graph
-    |> find_root()
-    |> then(fn root -> get_ordered_vertices_recusive(graph, [root], []) end)
+    |> find_roots()
+    |> then(fn roots -> get_ordered_vertices_recusive(graph, roots, []) end)
   end
 
   def get_ordered_vertices_recusive(_graph, [], visited_vertices),
