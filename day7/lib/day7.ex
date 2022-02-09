@@ -57,22 +57,22 @@ defmodule Day7 do
     |> then(fn root -> get_ordered_vertices_recusive(graph, [root], []) end)
   end
 
-  def get_ordered_vertices_recusive(_graph, [], visited_vertices) do
-    visited_vertices
-    |> IO.inspect()
-  end
+  def get_ordered_vertices_recusive(_graph, [], visited_vertices),
+    do: visited_vertices
 
-  def get_ordered_vertices_recusive(graph, [edge | next_edges], visited_vertices) do
-    IO.inspect(edge)
+  def get_ordered_vertices_recusive(graph, [vertex | next_vertices], visited_vertices) do
+    reachable_neighbors = reachable_neighbors(graph, vertex, visited_vertices)
 
-    neighbors = Graph.out_neighbors(graph, edge)
-
-    next_edges =
-      (next_edges ++ neighbors)
+    next_vertices =
+      (next_vertices ++ reachable_neighbors)
       |> Enum.uniq()
       |> Enum.sort()
 
-    get_ordered_vertices_recusive(graph, next_edges, visited_vertices ++ [edge])
+    get_ordered_vertices_recusive(
+      graph,
+      next_vertices,
+      visited_vertices ++ [vertex]
+    )
   end
 
   # Parsing ----------------------------------------------------------------

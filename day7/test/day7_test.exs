@@ -57,8 +57,7 @@ defmodule Day7Test do
   end
 
   test "sample1" do
-    Day7.solve1("sample")
-    assert Day7.solve1("sample") == "CABDFE"
+    assert Day7.solve1("sample") == 'CABDFE'
   end
 
   @tag :skip
