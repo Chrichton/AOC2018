@@ -47,10 +47,7 @@ defmodule Day7 do
     |> Graph.out_neighbors(vertex)
     |> Enum.filter(fn out_neighbor ->
       Graph.in_neighbors(graph, out_neighbor)
-      |> Enum.all?(fn in_neighbor ->
-        IO.inspect({out_neighbor, in_neighbor})
-        in_neighbor in visited_vertices
-      end)
+      |> Enum.all?(&(&1 in visited_vertices))
     end)
   end
 
