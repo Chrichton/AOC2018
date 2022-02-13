@@ -20,11 +20,6 @@ defmodule Day7 do
     {from_step, to_step}
   end
 
-  def solve2(filename) do
-    filename
-    |> read_input()
-  end
-
   def to_graph(edges_list) do
     edges_list
     |> Enum.reduce(Graph.new(), fn {from_node, to_node}, graph ->
@@ -38,11 +33,7 @@ defmodule Day7 do
     |> Enum.filter(&(Graph.in_neighbors(graph, &1) == []))
   end
 
-  def root?(graph, vertex), do: Graph.in_neighbors(graph, vertex) == []
-
   def reachable_neighbors(graph, vertex, visited_vertices) do
-    visited_vertices = [vertex | visited_vertices]
-
     graph
     |> Graph.out_neighbors(vertex)
     |> Enum.filter(fn out_neighbor ->
@@ -73,6 +64,73 @@ defmodule Day7 do
       next_vertices,
       visited_vertices ++ [vertex]
     )
+  end
+
+  # second star ---------------
+
+  def solve2(filename) do
+    filename
+    |> read_input()
+    |> to_graph()
+    |> build_time()
+  end
+
+  def build_time(graph) do
+    graph
+    |> find_roots()
+    |> then(fn roots -> get_build_time_recusive(graph, roots, [], 0) end)
+  end
+
+  def get_build_time_recusive(_graph, [], visited_vertices, _build_time),
+    do: visited_vertices
+
+  def get_build_time_recusive(graph, remaining_vertices, visited_vertices, build_time) do
+    if(
+      Enum.count(remaining_vertices) == 1 and
+        Graph.out_neighbors(graph, hd(remaining_vertices)) |> Enum.count() == 0
+    ) do
+      visited_vertices ++ remaining_vertices
+    else
+      reachables =
+        remaining_vertices
+        |> Enum.map(&{&1, reachable_neighbors(graph, &1, visited_vertices ++ remaining_vertices)})
+
+      reachable_vertices =
+        reachables
+        |> Enum.reject(fn {_vertex, reachable_neighbors} ->
+          reachable_neighbors == []
+        end)
+        |> Enum.map(fn {vertex, _reachable} -> vertex end)
+
+      next_vertices1 =
+        reachables
+        |> Enum.filter(fn {_vertex, reachable_neighbors} ->
+          reachable_neighbors == []
+        end)
+        |> Enum.map(fn {vertex, _reachable_neighbors} -> vertex end)
+
+      next_vertices2 =
+        reachables
+        |> Enum.reject(fn {_vertex, reachable_neighbors} ->
+          reachable_neighbors == []
+        end)
+        |> Enum.flat_map(fn {_vertex, reachable_neighbors} ->
+          reachable_neighbors
+        end)
+
+      next_vertices =
+        next_vertices1
+        |> Enum.concat(next_vertices2)
+        |> Enum.uniq()
+        |> Enum.sort()
+
+      get_build_time_recusive(
+        graph,
+        next_vertices,
+        visited_vertices ++ reachable_vertices,
+        build_time + 1
+      )
+    end
   end
 
   # Parsing ----------------------------------------------------------------
