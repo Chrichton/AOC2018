@@ -81,14 +81,15 @@ defmodule Day7 do
     |> then(fn roots -> get_build_time_recusive(graph, roots, [], 0) end)
   end
 
-  def get_build_time_recusive(_graph, [], visited_vertices, _build_time),
-    do: visited_vertices
-
   def get_build_time_recusive(graph, remaining_vertices, visited_vertices, build_time) do
+    worker_count = 5
+    step_duration = 60
+
     if(
       Enum.count(remaining_vertices) == 1 and
         Graph.out_neighbors(graph, hd(remaining_vertices)) |> Enum.count() == 0
     ) do
+      build_time + step_duration + char_duration(remaining_vertices)
       visited_vertices ++ remaining_vertices
     else
       reachables =
@@ -128,9 +129,14 @@ defmodule Day7 do
         graph,
         next_vertices,
         visited_vertices ++ reachable_vertices,
-        build_time + 1
+        build_time + step_duration + char_duration(reachable_vertices)
       )
     end
+  end
+
+  def char_duration(charlist) do
+    charlist
+    |> Enum.reduce(0, fn char, acc -> acc + char - ?A + 1 end)
   end
 
   # Parsing ----------------------------------------------------------------
