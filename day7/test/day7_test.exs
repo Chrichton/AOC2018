@@ -41,9 +41,9 @@ defmodule Day7Test do
       |> Day7.to_graph()
 
     # inputs_and_outputs = [
-    #   {{?C, []}, 'AF'},
-    #   {{?B, []}, ''},
-    #   {{?B, [?D, ?F]}, 'E'}
+    #   {{?C, [?C]}, 'AF'},
+    #   {{?B, [?B]}, ''},
+    #   {{?B, [?B, ?D, ?F]}, 'E'}
     # ]
 
     # for {{vertex, visited_vertices}, expected_output} <- inputs_and_outputs do
@@ -51,9 +51,9 @@ defmodule Day7Test do
     #   assert actual == expected_output
     # end
 
-    assert Day7.reachable_neighbors(graph, ?C, []) == 'AF'
-    assert Day7.reachable_neighbors(graph, ?B, []) == ''
-    assert Day7.reachable_neighbors(graph, ?B, [?D, ?F]) == 'E'
+    assert Day7.reachable_neighbors(graph, ?C, [?C]) == 'AF'
+    assert Day7.reachable_neighbors(graph, ?B, [?B]) == ''
+    assert Day7.reachable_neighbors(graph, ?B, [?B, ?D, ?F]) == 'E'
   end
 
   test "sample1" do
@@ -69,13 +69,11 @@ defmodule Day7Test do
     assert Day7.charlist_duration('ABCDEF') == 21
   end
 
-  # @tag :skip
   test "sample2" do
     assert Day7.solve2("sample") == 'CABDFE'
   end
 
-  @tag :skip
   test "star2" do
-    assert Day7.solve2("star") == 3969
+    assert Day7.solve2("star") == 'BKCJMSDVGHQRXFYZOAULPIEWTN'
   end
 end
