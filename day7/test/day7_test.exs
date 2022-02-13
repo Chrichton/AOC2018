@@ -64,9 +64,14 @@ defmodule Day7Test do
     assert Day7.solve1("star") == 'BKCJMSDVGHQRXFYZOAULPIEWTN'
   end
 
+  test "charlist_duration" do
+    assert Day7.charlist_duration('A') == 1
+    assert Day7.charlist_duration('ABCDEF') == 21
+  end
+
   # @tag :skip
   test "sample2" do
-    assert Day7.solve2("sample") == 17
+    assert Day7.solve2("sample") == 'CABDFE'
   end
 
   @tag :skip

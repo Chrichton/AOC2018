@@ -89,7 +89,7 @@ defmodule Day7 do
       Enum.count(remaining_vertices) == 1 and
         Graph.out_neighbors(graph, hd(remaining_vertices)) |> Enum.count() == 0
     ) do
-      build_time + step_duration + char_duration(remaining_vertices)
+      build_time + step_duration + charlist_duration(remaining_vertices)
       visited_vertices ++ remaining_vertices
     else
       reachables =
@@ -129,12 +129,12 @@ defmodule Day7 do
         graph,
         next_vertices,
         visited_vertices ++ reachable_vertices,
-        build_time + step_duration + char_duration(reachable_vertices)
+        build_time + step_duration + charlist_duration(reachable_vertices)
       )
     end
   end
 
-  def char_duration(charlist) do
+  def charlist_duration(charlist) when is_list(charlist) do
     charlist
     |> Enum.reduce(0, fn char, acc -> acc + char - ?A + 1 end)
   end
