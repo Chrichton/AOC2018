@@ -79,20 +79,19 @@ defmodule Day7 do
   def build_time(graph) do
     graph
     |> find_roots()
-    |> IO.inspect(label: "roots")
+    |> Enum.sort()
     |> then(fn roots -> get_build_time_recusive(graph, roots, [], 0) end)
   end
 
   def get_build_time_recusive(graph, remaining_vertices, visited_vertices, build_time) do
-    # worker_count = 5
-    # step_duration = 60
+    worker_count = 5
+    step_duration = 60
 
     if(
       Enum.count(remaining_vertices) == 1 and
         Graph.out_neighbors(graph, hd(remaining_vertices)) |> Enum.count() == 0
     ) do
-      # build_time + step_duration + charlist_duration(remaining_vertices)
-      visited_vertices ++ remaining_vertices
+      build_time + step_duration + charlist_duration(remaining_vertices)
     else
       reachables =
         remaining_vertices
@@ -107,8 +106,8 @@ defmodule Day7 do
         end)
         |> Enum.map(fn {vertex, _reachable} -> vertex end)
 
-      # processed_vertices = Enum.take(reachable_vertices, worker_count)
-      # remaining_vertices = Enum.drop(reachable_vertices, worker_count)
+      processed_vertices = Enum.take(reachable_vertices, worker_count)
+      remaining_vertices = Enum.drop(reachable_vertices, worker_count)
 
       next_vertices1 =
         reachables
@@ -116,8 +115,6 @@ defmodule Day7 do
           reachable_neighbors == []
         end)
         |> Enum.map(fn {vertex, _reachable_neighbors} -> vertex end)
-
-      IO.inspect(next_vertices1, label: "next_vertices1")
 
       next_vertices2 =
         reachables
@@ -128,22 +125,19 @@ defmodule Day7 do
           reachable_neighbors
         end)
 
-      IO.inspect(next_vertices2, label: "next_vertices2")
-
       next_vertices =
-        next_vertices1
+        reachable_vertices
+        |> Enum.concat(next_vertices1)
         |> Enum.concat(next_vertices2)
         |> Enum.uniq()
         |> Enum.sort()
 
-      IO.inspect(reachable_vertices, label: "reachable_vertices")
-
-      # get_build_time_recusive(
-      #   graph,
-      #   next_vertices,
-      #   visited_vertices ++ reachable_vertices,
-      #   build_time + step_duration + charlist_duration(reachable_vertices)
-      # )
+      get_build_time_recusive(
+        graph,
+        next_vertices,
+        visited_vertices ++ processed_vertices,
+        build_time + step_duration + charlist_duration(processed_vertices)
+      )
     end
   end
 
