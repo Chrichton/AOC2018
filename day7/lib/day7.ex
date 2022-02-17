@@ -77,14 +77,22 @@ defmodule Day7 do
   end
 
   def build_time(graph) do
+    max_worker_count = 5
+    worker_pool = WorkerPool.new(max_worker_count)
+
     graph
     |> find_roots()
     |> Enum.sort()
-    |> then(fn roots -> get_build_time_recusive(graph, roots, [], 0) end)
+    |> then(fn roots -> get_build_time_recusive(graph, roots, [], worker_pool, 0) end)
   end
 
-  def get_build_time_recusive(graph, remaining_vertices, visited_vertices, build_time) do
-    worker_count = 5
+  def get_build_time_recusive(
+        graph,
+        remaining_vertices,
+        visited_vertices,
+        %WorkerPool{max_worker_count: worker_count} = worker_pool,
+        build_time
+      ) do
     step_duration = 60
 
     if(
@@ -93,11 +101,16 @@ defmodule Day7 do
     ) do
       build_time + step_duration + charlist_duration(remaining_vertices)
     else
-      reachables =
-        remaining_vertices
-        |> Enum.map(&{&1, reachable_neighbors(graph, &1, visited_vertices ++ remaining_vertices)})
+      {processed_vertices, step_worker_pool} = WorkerPool.next_step(worker_pool)
 
-      IO.inspect(reachables, label: "reachables")
+      vertices =
+        remaining_vertices
+        |> Enum.concat(processed_vertices)
+        |> Enum.sort()
+
+      reachables =
+        vertices
+        |> Enum.map(&{&1, reachable_neighbors(graph, &1, visited_vertices ++ vertices)})
 
       reachable_vertices =
         reachables
@@ -106,29 +119,22 @@ defmodule Day7 do
         end)
         |> Enum.map(fn {vertex, _reachable} -> vertex end)
 
-      processed_vertices = Enum.take(reachable_vertices, worker_count)
-      remaining_vertices = Enum.drop(reachable_vertices, worker_count)
+      new_worker_pool =
+        reachable_vertices
+        |> Enum.drop(worker_count)
+        |> Enum.reduce(step_worker_pool, fn char, worker_pool ->
+          WorkerPool.add_worker(
+            worker_pool,
+            WorkerPool.Worker.new(char, step_duration)
+          )
+        end)
 
-      next_vertices1 =
+      next_vertices =
         reachables
         |> Enum.filter(fn {_vertex, reachable_neighbors} ->
           reachable_neighbors == []
         end)
         |> Enum.map(fn {vertex, _reachable_neighbors} -> vertex end)
-
-      next_vertices2 =
-        reachables
-        |> Enum.reject(fn {_vertex, reachable_neighbors} ->
-          reachable_neighbors == []
-        end)
-        |> Enum.flat_map(fn {_vertex, reachable_neighbors} ->
-          reachable_neighbors
-        end)
-
-      next_vertices =
-        reachable_vertices
-        |> Enum.concat(next_vertices1)
-        |> Enum.concat(next_vertices2)
         |> Enum.uniq()
         |> Enum.sort()
 
@@ -136,6 +142,7 @@ defmodule Day7 do
         graph,
         next_vertices,
         visited_vertices ++ processed_vertices,
+        new_worker_pool,
         build_time + step_duration + charlist_duration(processed_vertices)
       )
     end
