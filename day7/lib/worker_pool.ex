@@ -17,7 +17,7 @@ defmodule WorkerPool do
   defstruct [:max_worker_count, workers: []]
 
   @spec new(pos_integer()) :: WorkerPool.t()
-  def new(max_worker_count) do
+  def new(max_worker_count) when is_integer(max_worker_count) do
     %WorkerPool{max_worker_count: max_worker_count}
   end
 
