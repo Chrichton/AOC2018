@@ -93,64 +93,70 @@ defmodule Day7 do
         %WorkerPool{max_worker_count: worker_count} = worker_pool,
         build_time
       ) do
-    step_duration = 60
-
     if(
       Enum.count(remaining_vertices) == 1 and
         Graph.out_neighbors(graph, hd(remaining_vertices)) |> Enum.count() == 0
     ) do
-      build_time + step_duration + charlist_duration(remaining_vertices)
+      build_time + charlist_duration(remaining_vertices)
     else
       {processed_vertices, step_worker_pool} = WorkerPool.next_step(worker_pool)
 
-      vertices =
-        remaining_vertices
-        |> Enum.concat(processed_vertices)
-        |> Enum.sort()
-
-      reachables =
-        vertices
-        |> Enum.map(&{&1, reachable_neighbors(graph, &1, visited_vertices ++ vertices)})
+      available_vertices = processed_vertices ++ remaining_vertices
 
       reachable_vertices =
-        reachables
-        |> Enum.reject(fn {_vertex, reachable_neighbors} ->
-          reachable_neighbors == []
+        available_vertices
+        |> Enum.reject(fn vertex ->
+          reachable_neighbors(graph, vertex, visited_vertices ++ available_vertices) == []
         end)
-        |> Enum.map(fn {vertex, _reachable} -> vertex end)
+
+      new_remaining_vertices =
+        remaining_vertices
+        |> Enum.concat(reachable_vertices)
+        |> Enum.uniq()
+        |> Enum.sort()
 
       new_worker_pool =
-        reachable_vertices
-        |> Enum.drop(worker_count)
+        new_remaining_vertices
+        |> Enum.take(worker_count)
         |> Enum.reduce(step_worker_pool, fn char, worker_pool ->
           WorkerPool.add_worker(
             worker_pool,
-            WorkerPool.Worker.new(char, step_duration)
+            WorkerPool.Worker.new(char, seconds_to_complete(char))
           )
         end)
 
       next_vertices =
-        reachables
-        |> Enum.filter(fn {_vertex, reachable_neighbors} ->
-          reachable_neighbors == []
-        end)
-        |> Enum.map(fn {vertex, _reachable_neighbors} -> vertex end)
-        |> Enum.uniq()
-        |> Enum.sort()
+        new_remaining_vertices
+        |> Enum.drop(worker_count)
 
-      get_build_time_recusive(
-        graph,
-        next_vertices,
-        visited_vertices ++ processed_vertices,
-        new_worker_pool,
-        build_time + step_duration + charlist_duration(processed_vertices)
-      )
+      IO.inspect(next_vertices)
+      IO.inspect(visited_vertices)
+      IO.inspect(new_remaining_vertices)
+      IO.inspect(processed_vertices)
+      IO.inspect(reachable_vertices)
+      IO.inspect(new_worker_pool, label: "\n")
+
+      if build_time < 3 do
+        get_build_time_recusive(
+          graph,
+          next_vertices,
+          visited_vertices ++ processed_vertices,
+          new_worker_pool,
+          build_time + charlist_duration(processed_vertices)
+        )
+      end
     end
   end
 
   def charlist_duration(charlist) when is_list(charlist) do
     charlist
-    |> Enum.reduce(0, fn char, acc -> acc + char - ?A + 1 end)
+    |> Enum.reduce(0, fn char, acc -> acc + seconds_to_complete(char) end)
+  end
+
+  def seconds_to_complete(char) do
+    base_time = 0
+
+    char + base_time + 1 - ?A
   end
 
   # Parsing ----------------------------------------------------------------

@@ -36,7 +36,7 @@ defmodule WorkerPool do
       }),
       do: max_worker_count - Enum.count(workers)
 
-  @spec next_step(WorkerPool.t()) :: {non_neg_integer(), WorkerPool.t()}
+  @spec next_step(WorkerPool.t()) :: {[non_neg_integer()], WorkerPool.t()}
   def next_step(%WorkerPool{workers: workers} = worker_pool) do
     workers
     |> Enum.reduce(
