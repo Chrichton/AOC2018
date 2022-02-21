@@ -70,13 +70,11 @@ defmodule Day7Test do
   end
 
   test "sample2" do
-    Day7.solve2("sample")
-
-    assert Day7.solve2("sample") == 15
+    assert Day7.solve2("sample", 2, 0) == 15
     # assert Day7.solve2("sample") == 'CABFDE'
   end
 
   test "star2" do
-    assert Day7.solve2("star") == 'BKCJMSDVGHQRXFYZOAULPIEWTN'
+    assert Day7.solve2("star", 5, 60) == 1040
   end
 end

@@ -69,11 +69,11 @@ defmodule Day7 do
 
   # second star ---------------
 
-  def solve2(filename) do
+  def solve2(filename, max_worker_count, base_time) do
     filename
     |> read_input()
     |> to_graph()
-    |> seconds(2, 0)
+    |> seconds(max_worker_count, base_time)
   end
 
   def seconds(graph, max_worker_count, base_time) do
