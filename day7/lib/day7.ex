@@ -73,21 +73,21 @@ defmodule Day7 do
     filename
     |> read_input()
     |> to_graph()
-    |> seconds()
+    |> seconds(2, 0)
   end
 
-  def seconds(graph) do
-    max_worker_count = 2
+  def seconds(graph, max_worker_count, base_time) do
     worker_pool = WorkerPool.new(max_worker_count)
 
     graph
     |> find_roots()
     |> Enum.sort()
-    |> then(fn roots -> get_build_time_recusive(graph, roots, [], worker_pool, 0) end)
+    |> then(fn roots -> get_build_time_recusive(graph, base_time, roots, [], worker_pool, 0) end)
   end
 
   def get_build_time_recusive(
         _graph,
+        _base_time,
         [],
         _visited_vertices,
         %WorkerPool{workers: []},
@@ -97,6 +97,7 @@ defmodule Day7 do
 
   def get_build_time_recusive(
         graph,
+        base_time,
         remaining_vertices,
         visited_vertices,
         %WorkerPool{} = worker_pool,
@@ -126,7 +127,7 @@ defmodule Day7 do
       |> Enum.reduce(worker_pool, fn char, worker_pool ->
         WorkerPool.add_worker(
           worker_pool,
-          WorkerPool.Worker.new(char, seconds_to_complete(char))
+          WorkerPool.Worker.new(char, seconds_to_complete(char, base_time))
         )
       end)
 
@@ -136,6 +137,7 @@ defmodule Day7 do
 
     get_build_time_recusive(
       graph,
+      base_time,
       remaining_vertices,
       visited_vertices,
       worker_pool,
@@ -143,14 +145,12 @@ defmodule Day7 do
     )
   end
 
-  def charlist_duration(charlist) when is_list(charlist) do
+  def charlist_duration(charlist, base_time) when is_list(charlist) do
     charlist
-    |> Enum.reduce(0, fn char, acc -> acc + seconds_to_complete(char) end)
+    |> Enum.reduce(0, &(&1 + seconds_to_complete(&2, base_time)))
   end
 
-  def seconds_to_complete(char) do
-    base_time = 0
-
+  def seconds_to_complete(char, base_time) do
     char + base_time + 1 - ?A
   end
 

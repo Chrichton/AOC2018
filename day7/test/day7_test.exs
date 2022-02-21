@@ -65,8 +65,8 @@ defmodule Day7Test do
   end
 
   test "charlist_duration" do
-    assert Day7.charlist_duration('A') == 1 + 60
-    assert Day7.charlist_duration('ABCDEF') == 21 + 6 * 60
+    assert Day7.charlist_duration('A', 60) == 1 + 60
+    assert Day7.charlist_duration('ABCDEF', 60) == 21 + 6 * 60
   end
 
   test "sample2" do
