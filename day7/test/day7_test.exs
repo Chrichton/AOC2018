@@ -72,7 +72,8 @@ defmodule Day7Test do
   test "sample2" do
     Day7.solve2("sample")
 
-    assert Day7.solve2("sample") == 'CABFDE'
+    assert Day7.solve2("sample") == 15
+    # assert Day7.solve2("sample") == 'CABFDE'
   end
 
   test "star2" do

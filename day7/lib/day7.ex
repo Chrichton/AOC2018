@@ -73,10 +73,10 @@ defmodule Day7 do
     filename
     |> read_input()
     |> to_graph()
-    |> build_time()
+    |> seconds()
   end
 
-  def build_time(graph) do
+  def seconds(graph) do
     max_worker_count = 2
     worker_pool = WorkerPool.new(max_worker_count)
 
@@ -89,18 +89,18 @@ defmodule Day7 do
   def get_build_time_recusive(
         _graph,
         [],
-        visited_vertices,
+        _visited_vertices,
         %WorkerPool{workers: []},
-        build_time
+        seconds
       ),
-      do: visited_vertices
+      do: seconds - 1
 
   def get_build_time_recusive(
         graph,
         remaining_vertices,
         visited_vertices,
         %WorkerPool{} = worker_pool,
-        build_time
+        seconds
       ) do
     {processed_vertices, worker_pool} = WorkerPool.next_step(worker_pool)
 
@@ -134,14 +134,12 @@ defmodule Day7 do
       remaining_vertices
       |> Enum.drop(available_workers)
 
-    IO.inspect(worker_pool, label: "\n")
-
     get_build_time_recusive(
       graph,
       remaining_vertices,
       visited_vertices,
       worker_pool,
-      build_time + charlist_duration(processed_vertices)
+      seconds + 1
     )
   end
 
