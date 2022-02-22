@@ -8,6 +8,13 @@ defmodule Day7 do
     |> get_ordered_vertices()
   end
 
+  @spec read_input(
+          binary
+          | maybe_improper_list(
+              binary | maybe_improper_list(any, binary | []) | char,
+              binary | []
+            )
+        ) :: list
   def read_input(filename) do
     File.read!(filename)
     |> String.split("\n")
