@@ -18,26 +18,27 @@ defmodule Day8 do
   end
 
   def get_children(graph, numbers, parent_id, id, ids_stream) do
-    {child_node_count, metadata_count, remaining_numbers} =
+    {child_node_count, metadata_count, numbers} =
       numbers
       |> parse_node()
 
-    Enum.take(ids_stream, child_node_count)
-    |> Enum.reduce(graph, fn node_id, acc ->
-      get_children(acc, numbers, parent_id, node_id, ids_stream)
-    end)
+    {graph, numbers, ids_stream} =
+      Enum.take(ids_stream, child_node_count)
+      |> Enum.reduce({graph, numbers, ids_stream}, fn node_id, {graph, numbers, ids_stream} ->
+        get_children(graph, numbers, parent_id, node_id, ids_stream)
+      end)
 
     _metadata =
-      remaining_numbers
+      numbers
       |> Enum.take(metadata_count)
 
-    remaining_numbers =
-      remaining_numbers
+    numbers =
+      numbers
       |> Enum.drop(metadata_count)
 
     graph = Graph.add_edge(graph, parent_id, id)
 
-    {graph, remaining_numbers, ids_stream}
+    {graph, numbers, ids_stream}
   end
 
   def parse_node(numbers) do
