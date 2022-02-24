@@ -25,7 +25,7 @@ defmodule Day8 do
     {graph, numbers, ids_stream} =
       Enum.take(ids_stream, child_node_count)
       |> Enum.reduce({graph, numbers, ids_stream}, fn node_id, {graph, numbers, ids_stream} ->
-        get_children(graph, numbers, parent_id, node_id, ids_stream)
+        get_children(graph, numbers, id, node_id, ids_stream)
       end)
 
     _metadata =
@@ -36,7 +36,10 @@ defmodule Day8 do
       numbers
       |> Enum.drop(metadata_count)
 
-    graph = Graph.add_edge(graph, parent_id, id)
+    graph =
+      if parent_id == nil,
+        do: graph,
+        else: Graph.add_edge(graph, parent_id, id)
 
     {graph, numbers, ids_stream}
   end
