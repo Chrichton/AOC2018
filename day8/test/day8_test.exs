@@ -1,16 +1,14 @@
 defmodule Day8Test do
   use ExUnit.Case
 
-  @tag :skip
   test "read_input" do
-    actual = Day7.read_input("sample")
+    actual = Day8.read_input("sample")
 
-    expected = nil
+    expected = [2, 3, 0, 3, 10, 11, 12, 1, 1, 0, 1, 99, 2, 1, 1, 2]
 
     assert actual == expected
   end
 
-  @tag :skip
   test "sample1" do
     assert Day8.solve1("sample") == nil
   end
