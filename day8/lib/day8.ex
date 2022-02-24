@@ -5,6 +5,9 @@ defmodule Day8 do
     filename
     |> read_input()
     |> to_graph()
+    |> Graph.edges()
+    |> Enum.flat_map(fn %Graph.Edge{label: metadata} -> metadata end)
+    |> Enum.sum()
   end
 
   def read_input(filename) do
@@ -15,6 +18,7 @@ defmodule Day8 do
 
   def to_graph(numbers) do
     get_children(Graph.new(), numbers, nil, ?A, Stream.iterate(?B, &(&1 + 1)))
+    |> elem(0)
   end
 
   def get_children(graph, numbers, parent_id, id, ids_stream) do
@@ -31,7 +35,7 @@ defmodule Day8 do
         get_children(graph, numbers, id, node_id, ids_stream)
       end)
 
-    _metadata =
+    metadata =
       numbers
       |> Enum.take(metadata_count)
 
@@ -42,7 +46,7 @@ defmodule Day8 do
     graph =
       if parent_id == nil,
         do: graph,
-        else: Graph.add_edge(graph, parent_id, id)
+        else: Graph.add_edge(graph, parent_id, id, label: metadata)
 
     {graph, numbers, ids_stream}
   end
