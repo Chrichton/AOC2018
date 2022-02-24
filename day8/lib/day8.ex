@@ -14,7 +14,7 @@ defmodule Day8 do
   end
 
   def to_graph(numbers) do
-    get_children(Graph.new(), numbers, nil, ?A, Stream.iterate(?B, &(&1 + 1)))
+    get_children(Graph.new(), numbers, nil, ?A, [?B, ?C, ?D, ?E, ?F])
   end
 
   def get_children(graph, numbers, parent_id, id, ids_stream) do
@@ -22,8 +22,11 @@ defmodule Day8 do
       numbers
       |> parse_node()
 
+    node_ids = Enum.take(ids_stream, child_node_count)
+    ids_stream = Enum.drop(ids_stream, child_node_count)
+
     {graph, numbers, ids_stream} =
-      Enum.take(ids_stream, child_node_count)
+      node_ids
       |> Enum.reduce({graph, numbers, ids_stream}, fn node_id, {graph, numbers, ids_stream} ->
         get_children(graph, numbers, id, node_id, ids_stream)
       end)
