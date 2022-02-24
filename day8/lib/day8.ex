@@ -43,10 +43,7 @@ defmodule Day8 do
       numbers
       |> Enum.drop(metadata_count)
 
-    graph =
-      if parent_id == nil,
-        do: graph,
-        else: Graph.add_edge(graph, parent_id, id, label: metadata)
+    graph = Graph.add_edge(graph, parent_id, id, label: metadata)
 
     {graph, numbers, ids_stream}
   end
