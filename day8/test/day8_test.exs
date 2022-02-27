@@ -17,9 +17,8 @@ defmodule Day8Test do
     assert Day8.solve1("star") == 40701
   end
 
-  @tag :skip
   test "sample2" do
-    assert Day8.solve2("sample") == nil
+    assert Day8.solve2("sample") == 66
   end
 
   @tag :skip

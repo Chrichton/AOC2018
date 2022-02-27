@@ -71,6 +71,39 @@ defmodule Day8 do
   def solve2(filename) do
     filename
     |> read_input()
+    |> to_graph()
+    |> calc_value()
+  end
+
+  def calc_value(graph) do
+    graph
+    |> find_root()
+    |> then(fn root ->
+      calc_value(graph, root, Graph.out_edges(graph, root))
+    end)
+  end
+
+  def calc_value(_graph, %Graph.Edge{label: metadata}, _out_edges = []),
+    do: Enum.sum(metadata)
+
+  def calc_value(graph, %Graph.Edge{label: metadata, v2: vertex}, out_edges) do
+    children_count = Enum.count(out_edges)
+
+    metadata
+    |> Enum.reduce(0, fn child_index, acc ->
+      if child_index >= children_count do
+        acc
+      else
+        edge = Graph.edge(graph, vertex, Enum.at(out_edges, child_index))
+        acc + calc_value(graph, edge, Graph.out_edges(graph, edge))
+      end
+    end)
+  end
+
+  def find_root(graph) do
+    graph
+    |> Graph.edges()
+    |> Enum.find(&match?(%Graph.Edge{v1: nil}, &1))
   end
 
   # Parsing ----------------------------------------------------------------
