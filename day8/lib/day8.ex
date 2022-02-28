@@ -90,6 +90,7 @@ defmodule Day8 do
     children_count = Enum.count(out_edges)
 
     metadata
+    |> Enum.reject(&(&1 == 0))
     |> Enum.reduce(0, fn child_index, acc ->
       if child_index > children_count do
         acc
