@@ -78,24 +78,24 @@ defmodule Day8 do
   def calc_value(graph) do
     graph
     |> find_root()
-    |> then(fn root ->
-      calc_value(graph, root, Graph.out_edges(graph, root))
+    |> then(fn %Graph.Edge{v2: vertex} = root ->
+      calc_value(graph, root, Graph.out_edges(graph, vertex))
     end)
   end
 
   def calc_value(_graph, %Graph.Edge{label: metadata}, _out_edges = []),
     do: Enum.sum(metadata)
 
-  def calc_value(graph, %Graph.Edge{label: metadata, v2: vertex}, out_edges) do
+  def calc_value(graph, %Graph.Edge{label: metadata}, out_edges) do
     children_count = Enum.count(out_edges)
 
     metadata
     |> Enum.reduce(0, fn child_index, acc ->
-      if child_index >= children_count do
+      if child_index > children_count do
         acc
       else
-        edge = Graph.edge(graph, vertex, Enum.at(out_edges, child_index))
-        acc + calc_value(graph, edge, Graph.out_edges(graph, edge))
+        %Graph.Edge{v2: vertex} = edge = Enum.at(out_edges, child_index - 1)
+        acc + calc_value(graph, edge, Graph.out_edges(graph, vertex))
       end
     end)
   end
