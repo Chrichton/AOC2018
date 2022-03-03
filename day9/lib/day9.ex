@@ -28,14 +28,28 @@ defmodule Day9 do
   end
 
   def process_multiples_of_23(marble_no, player_no, marbles, current_marble_index, players) do
+    {removed_marble_no, marbles, new_marble_index} =
+      pop_marble(
+        marbles,
+        current_marble_index
+      )
+
+    score = marble_no + removed_marble_no
+    players = Map.update(players, player_no, score, &(&1 + score))
+
+    {marbles, new_marble_index, players}
+  end
+
+  def pop_marble(marbles, current_marble_index) do
     remove_index = next_marble_index(marbles, current_marble_index, -7)
     {removed_marble_no, marbles} = List.pop_at(marbles, remove_index)
 
-    score = marble_no + removed_marble_no
+    new_marble_index =
+      if remove_index == Enum.count(marbles),
+        do: remove_index - 1,
+        else: remove_index
 
-    players = Map.update(players, player_no, score, &(&1 + score))
-
-    {marbles, remove_index, players}
+    {removed_marble_no, marbles, new_marble_index}
   end
 
   def place_marble(marble_no, marbles, current_marble_index, players) do
