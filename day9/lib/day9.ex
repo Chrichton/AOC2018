@@ -19,24 +19,31 @@ defmodule Day9 do
       if rem(marble_no, 23) == 0 do
         process_multiples_of_23(marble_no, player_no, marbles, current_marble_index, players)
       else
-        process_normal(marble_no, player_no, marbles, current_marble_index, players)
+        place_marble(marble_no, marbles, current_marble_index, players)
       end
     end)
+    |> elem(2)
+    |> Map.values()
+    |> Enum.max()
   end
 
-  def process_multiples_of_23(_marble_no, _player_no, _marbles, _current_marble_index, _players) do
+  def process_multiples_of_23(marble_no, player_no, marbles, current_marble_index, players) do
+    remove_index = next_marble_index(marbles, current_marble_index, -7)
+    {removed_marble_no, marbles} = List.pop_at(marbles, remove_index)
+
+    score = marble_no + removed_marble_no
+
+    players = Map.update(players, player_no, score, &(&1 + score))
+
+    {marbles, remove_index, players}
   end
 
-  def process_normal(marble_no, _player_no, marbles, current_marble_index, _players) do
-    {_marbles, _current_marble_index} = place_marble(marbles, marble_no, current_marble_index)
-  end
-
-  def place_marble(marbles, marble, current_marble_index) do
+  def place_marble(marble_no, marbles, current_marble_index, players) do
     insert_index = next_marble_index(marbles, current_marble_index, 1) + 1
 
-    marbles = List.insert_at(marbles, insert_index, marble)
+    marbles = List.insert_at(marbles, insert_index, marble_no)
 
-    {marbles, insert_index}
+    {marbles, insert_index, players}
   end
 
   def next_marble_index(marbles, current_marble_index, increment) do

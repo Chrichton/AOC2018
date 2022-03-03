@@ -40,20 +40,28 @@ defmodule Day9Test do
   end
 
   test "place_marble" do
-    assert Day9.place_marble([0], 1, 0) == {[0, 1], 1}
-    assert Day9.place_marble([0, 1], 2, 1) == {[0, 2, 1], 1}
-    assert Day9.place_marble([0, 2, 1], 3, 1) == {[0, 2, 1, 3], 3}
-    assert Day9.place_marble([0, 2, 1, 3], 4, 3) == {[0, 4, 2, 1, 3], 1}
+    assert Day9.place_marble(1, [0], 0, nil) == {[0, 1], 1, nil}
+    assert Day9.place_marble(2, [0, 1], 1, nil) == {[0, 2, 1], 1, nil}
+    assert Day9.place_marble(3, [0, 2, 1], 1, nil) == {[0, 2, 1, 3], 3, nil}
+    assert Day9.place_marble(4, [0, 2, 1, 3], 3, nil) == {[0, 4, 2, 1, 3], 1, nil}
   end
 
-  @tag :skip
+  test "winning_score" do
+    assert Day9.winning_score({9, 25}) == 32
+    assert Day9.winning_score({10, 1618}) == 8317
+    assert Day9.winning_score({17, 1104}) == 2764
+    assert Day9.winning_score({21, 6111}) == 54718
+    assert Day9.winning_score({30, 5807}) == 37305
+  end
+
   test "sample1" do
-    assert Day9.solve1("sample") == nil
+    assert Day9.solve1("sample") == 146_373
   end
 
   @tag :skip
   test "star1" do
-    assert Day9.solve1("star") == nil
+    # too low
+    assert Day9.solve1("star") == 413_561
   end
 
   @tag :skip
