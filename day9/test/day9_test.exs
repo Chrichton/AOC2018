@@ -39,6 +39,13 @@ defmodule Day9Test do
     assert Day9.marble_no_player_no_pairs(25, 9) == expected
   end
 
+  test "place_marble" do
+    assert Day9.place_marble([0], 1, 0) == {[0, 1], 1}
+    assert Day9.place_marble([0, 1], 2, 1) == {[0, 2, 1], 1}
+    assert Day9.place_marble([0, 2, 1], 3, 1) == {[0, 2, 1, 3], 3}
+    assert Day9.place_marble([0, 2, 1, 3], 4, 3) == {[0, 4, 2, 1, 3], 1}
+  end
+
   @tag :skip
   test "sample1" do
     assert Day9.solve1("sample") == nil
