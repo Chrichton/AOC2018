@@ -2,7 +2,9 @@ defmodule Day9Test do
   use ExUnit.Case
 
   test "read_input" do
-    expected = {10, 1618, 8317}
+    expected = {10, 1618}
+
+    assert Day9.read_input("sample") == expected
   end
 
   test "marble_no_player_no_pairs" do

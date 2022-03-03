@@ -4,17 +4,21 @@ defmodule Day9 do
   def solve1(filename) do
     filename
     |> read_input()
+    |> winning_score()
   end
 
   def read_input(filename) do
     File.read!(filename)
-    |> Enum.map(&parse_input/1)
+    |> parse_input()
+  end
+
+  def winning_score({no_of_playsers, last_marble_worth}) do
   end
 
   def parse_input(string) do
-    {:ok, [no_of_playsers, last_marble_worth, high_score], "", _, _, _} = parsec_input(string)
+    {:ok, [no_of_playsers, last_marble_worth], "", _, _, _} = parsec_input(string)
 
-    {no_of_playsers, last_marble_worth, high_score}
+    {no_of_playsers, last_marble_worth}
   end
 
   def marble_no_player_no_pairs(no_of_marbles, no_of_players) do
@@ -35,7 +39,6 @@ defmodule Day9 do
     integer(min: 1)
     |> ignore(string(" players; last marble is worth "))
     |> integer(min: 1)
-    |> ignore(string(" points: high score is "))
-    |> integer(min: 1)
+    |> ignore(string(" points"))
   )
 end
