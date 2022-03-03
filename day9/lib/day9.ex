@@ -8,14 +8,17 @@ defmodule Day9 do
 
   def read_input(filename) do
     File.read!(filename)
-    |> String.split("\n")
     |> Enum.map(&parse_input/1)
   end
 
   def parse_input(string) do
-    {:ok, [from_step, to_step], "", _, _, _} = parsec_input(string)
+    {:ok, [no_of_playsers, last_marble_worth, high_score], "", _, _, _} = parsec_input(string)
 
-    {from_step, to_step}
+    {no_of_playsers, last_marble_worth, high_score}
+  end
+
+  def marble_no_player_no_pairs(no_of_marbles, no_of_players) do
+    Enum.zip(1..no_of_marbles, Stream.cycle(1..no_of_players))
   end
 
   # second star ---------------
@@ -32,6 +35,7 @@ defmodule Day9 do
     integer(min: 1)
     |> ignore(string(" players; last marble is worth "))
     |> integer(min: 1)
-    |> ignore(string(" points"))
+    |> ignore(string(" points: high score is "))
+    |> integer(min: 1)
   )
 end
