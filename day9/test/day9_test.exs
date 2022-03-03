@@ -63,6 +63,9 @@ defmodule Day9Test do
 
   @tag :skip
   test "star1" do
+    # too high
+    assert Day9.solve1("star") == 429_465
+
     # too low
     assert Day9.solve1("star") == 413_561
   end
