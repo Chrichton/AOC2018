@@ -32,16 +32,15 @@ defmodule Day9 do
   end
 
   def place_marble(marbles, marble, current_marble_index) do
-    first_marble_index =
-      Stream.cycle(marbles)
-      |> Stream.drop(current_marble_index + 1)
-      |> Enum.at(0)
-      |> then(fn right_marble -> Enum.find_index(marbles, &(&1 == right_marble)) end)
+    insert_index = next_marble_index(marbles, current_marble_index, 1) + 1
 
-    insert_index = first_marble_index + 1
     marbles = List.insert_at(marbles, insert_index, marble)
 
     {marbles, insert_index}
+  end
+
+  def next_marble_index(marbles, current_marble_index, increment) do
+    rem(current_marble_index + increment, Enum.count(marbles))
   end
 
   def parse_input(string) do
