@@ -46,6 +46,11 @@ defmodule Day9Test do
     assert Day9.place_marble(4, [0, 2, 1, 3], 3, nil) == {[0, 4, 2, 1, 3], 1, nil}
   end
 
+  test "pop_marble" do
+    assert Day9.pop_marble([1, 2, 3, 4, 5, 6, 7, 8], 7) == {1, [2, 3, 4, 5, 6, 7, 8], 0}
+    assert Day9.pop_marble([1, 2, 3, 4, 5, 6, 7, 8], 6) == {8, [1, 2, 3, 4, 5, 6, 7], 6}
+  end
+
   test "winning_score" do
     assert Day9.winning_score({9, 25}) == 32
     assert Day9.winning_score({10, 1618}) == 8317
@@ -61,13 +66,8 @@ defmodule Day9Test do
     assert Day9.solve1("sample") == 8317
   end
 
-  @tag :skip
   test "star1" do
-    # too high
-    assert Day9.solve1("star") == 429_465
-
-    # too low
-    assert Day9.solve1("star") == 413_561
+    assert Day9.solve1("star") == 418_237
   end
 
   @tag :skip

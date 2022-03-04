@@ -61,7 +61,15 @@ defmodule Day9 do
   end
 
   def next_marble_index(marbles, current_marble_index, increment) do
-    rem(current_marble_index + increment, Enum.count(marbles))
+    index_sum = current_marble_index + increment
+    marbles_count = Enum.count(marbles)
+
+    index =
+      if index_sum < 0,
+        do: index_sum + marbles_count,
+        else: index_sum
+
+    rem(index, marbles_count)
   end
 
   def parse_input(string) do
