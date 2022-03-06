@@ -54,12 +54,10 @@ defmodule Day9Test do
   test "winning_score" do
     assert Day9.winning_score({9, 25}) == 32
     assert Day9.winning_score({10, 1618}) == 8317
+    assert Day9.winning_score({13, 7999}) == 146_373
     assert Day9.winning_score({17, 1104}) == 2764
     assert Day9.winning_score({21, 6111}) == 54718
     assert Day9.winning_score({30, 5807}) == 37305
-
-    # 202 too little
-    assert Day9.winning_score({13, 7999}) == 146_373
   end
 
   test "sample1" do
@@ -70,13 +68,7 @@ defmodule Day9Test do
     assert Day9.solve1("star") == 418_237
   end
 
-  @tag :skip
-  test "sample2" do
-    assert Day9.solve2("sample") == nil
-  end
-
-  @tag :skip
   test "star2" do
-    assert Day9.solve2("star") == nil
+    assert Day9.winning_score({423, 7_194_400}) == nil
   end
 end
