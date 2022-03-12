@@ -8,8 +8,7 @@ defmodule Day10 do
 
   def read_input(filename) do
     File.read!(filename)
-    |> String.split("\n")
-    |> Enum.map(&parsec_input/1)
+    |> parse_input()
   end
 
   def visualize_puzzle(points) do
@@ -53,8 +52,13 @@ defmodule Day10 do
   end
 
   def parse_input(string) do
-    {:ok, [x, y, " ", vx, vy], _, _, _, _} = parsec_input(string)
+    {:ok, lines, _, _, _, _} = lines(string)
 
+    lines
+    |> Enum.map(&map_parsed_line/1)
+  end
+
+  def map_parsed_line([x, y, " ", vx, vy]) do
     [x, y, vx, vy]
     |> Enum.map(fn
       ["-", number] -> -number
@@ -96,8 +100,7 @@ defmodule Day10 do
     position
     |> concat(string(" "))
     |> concat(velocity)
-
-  # |> wrap()
+    |> wrap()
 
   optional_linebreak =
     "\n"
@@ -105,6 +108,6 @@ defmodule Day10 do
     |> optional()
     |> ignore()
 
-  defparsec(:line, line)
-  defparsec(:parsec_input, times(parsec(:line) |> concat(optional_linebreak), min: 0))
+  defparsecp(:line, line)
+  defparsecp(:lines, times(parsec(:line) |> concat(optional_linebreak), min: 0))
 end

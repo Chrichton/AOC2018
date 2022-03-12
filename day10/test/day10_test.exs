@@ -4,9 +4,15 @@ defmodule Day10Test do
   test "parse_input" do
     input = """
     position=<-50310,  10306> velocity=< 5, -1>
+    position=< 10277, -30099> velocity=<-1,  3>
     """
 
-    assert Day10.parse_input(input) == {-50310, 10306, 5, -1}
+    expected = [
+      {-50310, 10306, 5, -1},
+      {10277, -30099, -1, 3}
+    ]
+
+    assert Day10.parse_input(input) == expected
   end
 
   @tag :skip
