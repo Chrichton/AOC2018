@@ -1,6 +1,14 @@
 defmodule Day10Test do
   use ExUnit.Case
 
+  test "parse_input" do
+    input = """
+    position=<-50310,  10306> velocity=< 5, -1>
+    """
+
+    assert Day10.parse_input(input) == {-50310, 10306, 5, -1}
+  end
+
   @tag :skip
   test "read_input" do
     actual = Day10.read_input("sample")

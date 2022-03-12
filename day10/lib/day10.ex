@@ -9,7 +9,7 @@ defmodule Day10 do
   def read_input(filename) do
     File.read!(filename)
     |> String.split("\n")
-    |> Enum.map(&parsec_header/1)
+    |> Enum.map(&parsec_input/1)
   end
 
   def visualize_puzzle(points) do
@@ -52,10 +52,15 @@ defmodule Day10 do
     |> Enum.join("\n")
   end
 
-  def parse_header(string) do
-    {:ok, [child_node_count, metadata_count], _, _, _, _} = parsec_header(string)
+  def parse_input(string) do
+    {:ok, [x, y, " ", vx, vy], _, _, _, _} = parsec_input(string)
 
-    {child_node_count, metadata_count}
+    [x, y, vx, vy]
+    |> Enum.map(fn
+      ["-", number] -> -number
+      [number] -> number
+    end)
+    |> List.to_tuple()
   end
 
   # second star ---------------
@@ -67,11 +72,39 @@ defmodule Day10 do
 
   # Parsing ----------------------------------------------------------------
 
-  defparsecp(
-    :parsec_header,
-    integer(min: 1)
-    |> ignore(string(" "))
-    |> integer(min: 1)
-    |> ignore(string(" "))
-  )
+  value =
+    choice([
+      concat(string("-"), integer(min: 1)),
+      integer(min: 1)
+    ])
+    |> wrap()
+
+  pair =
+    ignore(string("<"))
+    |> eventually(value)
+    |> eventually(ignore(string(",")))
+    |> eventually(value)
+    |> eventually(ignore(string(">")))
+
+  position = ignore(string("position=")) |> concat(pair)
+  # |> tag(:position)
+
+  velocity = ignore(string("velocity=")) |> concat(pair)
+  # |> tag(:velocity)
+
+  line =
+    position
+    |> concat(string(" "))
+    |> concat(velocity)
+
+  # |> wrap()
+
+  optional_linebreak =
+    "\n"
+    |> string()
+    |> optional()
+    |> ignore()
+
+  defparsec(:line, line)
+  defparsec(:parsec_input, times(parsec(:line) |> concat(optional_linebreak), min: 0))
 end
