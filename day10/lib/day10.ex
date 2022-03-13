@@ -64,15 +64,17 @@ defmodule Day10 do
       end)
       |> elem(1)
 
-    for y <- min_y..max_y do
-      for x <- min_x..max_x do
-        if MapSet.member?(points, {x, y}),
-          do: "#",
-          else: "."
+    if max_y - min_y < 50 and max_x - min_x < 100 do
+      for(y <- min_y..max_y) do
+        for x <- min_x..max_x do
+          if MapSet.member?(points, {x, y}),
+            do: "#",
+            else: "."
+        end
+        |> Enum.join()
       end
-      |> Enum.join()
+      |> Enum.join("\n")
     end
-    |> Enum.join("\n")
   end
 
   def parse_input(string) do
