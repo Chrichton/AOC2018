@@ -15,38 +15,59 @@ defmodule Day10Test do
     assert Day10.parse_input(@input) == expected
   end
 
-  test "to_map" do
+  test "to_list" do
     lines = Day10.parse_input(@input)
 
-    actual = Day10.to_map(lines)
+    actual = Day10.to_list(lines)
 
-    expected = %{
-      {-50310, 10306} => {5, -1},
-      {10277, -30099} => {-1, 3}
-    }
+    expected = [
+      {{-50310, 10306}, {5, -1}},
+      {{10277, -30099}, {-1, 3}}
+    ]
 
     assert actual == expected
   end
 
   test "next_step" do
-    map =
+    list =
       @input
       |> Day10.parse_input()
-      |> Day10.to_map()
+      |> Day10.to_list()
 
-    actual = Day10.next_step(map)
+    actual = Day10.next_step(list)
 
-    expected = %{
-      {-50310 + 5, 10306 - 1} => {5, -1},
-      {10277 - 1, -30099 + 3} => {-1, 3}
-    }
+    expected = [
+      {{-50310 + 5, 10306 - 1}, {5, -1}},
+      {{10277 - 1, -30099 + 3}, {-1, 3}}
+    ]
 
     assert actual == expected
   end
 
-  @tag :skip
   test "sample1" do
-    assert Day10.solve1("sample") == nil
+    list =
+      Day10.read_input("sample")
+      |> Day10.to_list()
+      |> Day10.next_step()
+      |> Day10.next_step()
+      |> Day10.next_step()
+
+    expected = """
+    #...#..###
+    #...#...#.
+    #...#...#.
+    #####...#.
+    #...#...#.
+    #...#...#.
+    #...#...#.
+    #...#..###\
+    """
+
+    points = Day10.positons(list)
+
+    actual = Day10.visualize_puzzle(points)
+
+    assert actual == expected
   end
 
   @tag :skip

@@ -4,7 +4,7 @@ defmodule Day10 do
   def solve1(filename) do
     filename
     |> read_input()
-    |> to_map()
+    |> to_list()
   end
 
   def read_input(filename) do
@@ -12,21 +12,30 @@ defmodule Day10 do
     |> parse_input()
   end
 
-  def to_map(lines) do
+  def to_list(lines) do
     lines
-    |> Enum.reduce(Map.new(), fn {x, y, vx, vy}, acc ->
-      Map.put(acc, {x, y}, {vx, vy})
+    |> Enum.map(fn {x, y, vx, vy} ->
+      {{x, y}, {vx, vy}}
     end)
   end
 
-  def next_step(map) do
-    map
-    |> Enum.reduce(Map.new(), fn {{x, y}, {vx, vy}}, acc ->
-      Map.put(acc, {x + vx, y + vy}, {vx, vy})
+  def positons(list) do
+    list
+    |> Enum.map(fn {{x, y}, {_vx, _vy}} ->
+      {x, y}
+    end)
+  end
+
+  def next_step(list) do
+    list
+    |> Enum.map(fn {{x, y}, {vx, vy}} ->
+      {{x + vx, y + vy}, {vx, vy}}
     end)
   end
 
   def visualize_puzzle(points) do
+    points = MapSet.new(points)
+
     min_x =
       points
       |> Enum.min_by(fn {x, _y} ->
