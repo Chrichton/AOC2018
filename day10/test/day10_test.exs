@@ -70,29 +70,34 @@ defmodule Day10Test do
     assert actual == expected
   end
 
-  test "star1" do
-    # assert Day10.solve1("star") == nil
-
+  test "star" do
     list =
       Day10.read_input("star")
       |> Day10.to_list()
 
-    # points = Day10.positons(list)
+    result_list =
+      0..10100
+      |> Enum.reduce(list, fn step, acc ->
+        Day10.next_step(acc)
+      end)
 
-    # Day10.visualize_puzzle(points)
-    0..10101
-    |> Enum.reduce(list, fn step, acc ->
-      points = Day10.positons(acc)
+    points = Day10.positons(result_list)
+    actual = Day10.visualize_puzzle(points)
 
-      result = Day10.visualize_puzzle(points)
+    expected = """
+    .####...#####...######..#####...#####...#####...######.....###
+    #....#..#....#..#.......#....#..#....#..#....#..#...........#.
+    #.......#....#..#.......#....#..#....#..#....#..#...........#.
+    #.......#....#..#.......#....#..#....#..#....#..#...........#.
+    #.......#####...#####...#####...#####...#####...#####.......#.
+    #..###..#.......#.......#.......#.......#.......#...........#.
+    #....#..#.......#.......#.......#.......#.......#...........#.
+    #....#..#.......#.......#.......#.......#.......#.......#...#.
+    #...##..#.......#.......#.......#.......#.......#.......#...#.
+    .###.#..#.......######..#.......#.......#.......######...###..\
+    """
 
-      if result != nil do
-        IO.puts(result)
-        IO.puts("\n#{step}\n")
-      end
-
-      Day10.next_step(acc)
-    end)
+    assert actual == expected
   end
 
   @tag :skip
