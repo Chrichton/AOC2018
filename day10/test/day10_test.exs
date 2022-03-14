@@ -77,7 +77,7 @@ defmodule Day10Test do
 
     result_list =
       0..10100
-      |> Enum.reduce(list, fn step, acc ->
+      |> Enum.reduce(list, fn _step, acc ->
         Day10.next_step(acc)
       end)
 
