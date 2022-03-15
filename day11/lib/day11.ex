@@ -7,8 +7,8 @@ defmodule Day11 do
     power_level = rack_id * y
     power_level = power_level + grid_serial_number
     power_level = power_level * rack_id
-    hundreds_digit = extract_hundreds_digit(power_level)
-    power_level - hundreds_digit
+    power_level = extract_hundreds_digit(power_level)
+    power_level - 5
   end
 
   @spec extract_hundreds_digit(integer) :: integer
