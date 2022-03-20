@@ -1,6 +1,5 @@
 defmodule Day11 do
-  @grid_size 300
-  @range 1..@grid_size
+  @range 1..300
 
   def solve1(grid_serial_number) do
     grid_serial_number
@@ -17,7 +16,6 @@ defmodule Day11 do
   end
 
   def calc_windows(power_level_map, window_size) do
-    IO.puts("window_size #{window_size}--------------------")
     ranges = Enum.chunk_every(@range, window_size, 1, :discard)
 
     for x_range <- ranges,
@@ -61,16 +59,23 @@ defmodule Day11 do
     |> calc_power_level_map()
     |> calc_windows_squared()
     |> Enum.max_by(fn {_position, power_level, _window_size} -> power_level end)
-    |> then(fn {position, _power_level, window_size} ->
-      {position, window_size}
+    |> then(fn {position, power_level, window_size} ->
+      {position, power_level, window_size}
     end)
   end
 
   def calc_windows_squared(grid_serial_number) do
-    max = round(:math.sqrt(@grid_size))
-
-    1..max
-    |> Enum.map(&(&1 * &1))
-    |> Enum.flat_map(&calc_windows(grid_serial_number, &1))
+    1..300
+    |> Enum.map(
+      &(calc_windows(grid_serial_number, &1)
+        |> Enum.max_by(fn {_position, power_level, _window_size} ->
+          power_level
+        end)
+        |> tap(fn {{x, y}, power_level, window_size} ->
+          IO.puts(
+            "position: #{x}, #{y}, power_level: #{power_level}, window_size: #{window_size}-------"
+          )
+        end))
+    )
   end
 end
