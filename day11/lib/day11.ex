@@ -1,11 +1,12 @@
 defmodule Day11 do
-  @range 1..300
+  @grid_size 300
+  @range 1..@grid_size
 
   def solve1(grid_serial_number) do
     grid_serial_number
     |> calc_power_level_map()
-    |> calc_windows()
-    |> Enum.max_by(fn {_position, power_level} -> power_level end)
+    |> calc_windows(3)
+    |> Enum.max_by(fn {_position, power_level, _window_size} -> power_level end)
     |> elem(0)
   end
 
@@ -15,18 +16,19 @@ defmodule Day11 do
     end
   end
 
-  def calc_windows(power_level_map) do
-    ranges = Enum.chunk_every(@range, 3, 1, :discard)
+  def calc_windows(power_level_map, window_size) do
+    IO.puts("window_size #{window_size}--------------------")
+    ranges = Enum.chunk_every(@range, window_size, 1, :discard)
 
     for x_range <- ranges,
         y_range <- ranges do
-      for x <- x_range, y <- y_range, reduce: {nil, 0} do
-        {position, sum} ->
+      for x <- x_range, y <- y_range, reduce: {nil, 0, window_size} do
+        {position, sum, window_size} ->
           power_level = Map.get(power_level_map, {x, y})
 
           if position == nil,
-            do: {{x, y}, sum + power_level},
-            else: {position, sum + power_level}
+            do: {{x, y}, sum + power_level, window_size},
+            else: {position, sum + power_level, window_size}
       end
     end
   end
@@ -50,5 +52,25 @@ defmodule Day11 do
     if Enum.count(digits) < 3,
       do: 0,
       else: Enum.at(digits, 2)
+  end
+
+  # ----------------------------------------------------------------
+
+  def solve2(grid_serial_number) do
+    grid_serial_number
+    |> calc_power_level_map()
+    |> calc_windows_squared()
+    |> Enum.max_by(fn {_position, power_level, _window_size} -> power_level end)
+    |> then(fn {position, _power_level, window_size} ->
+      {position, window_size}
+    end)
+  end
+
+  def calc_windows_squared(grid_serial_number) do
+    max = round(:math.sqrt(@grid_size))
+
+    1..max
+    |> Enum.map(&(&1 * &1))
+    |> Enum.flat_map(&calc_windows(grid_serial_number, &1))
   end
 end

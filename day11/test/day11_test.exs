@@ -23,4 +23,9 @@ defmodule Day11Test do
   test "solve1" do
     assert Day11.solve1(5468) == {243, 64}
   end
+
+  # Finished in 397.4 seconds
+  test "solve2" do
+    assert Day11.solve2(5468) == {{90, 100}, 16}
+  end
 end
