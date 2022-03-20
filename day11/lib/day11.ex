@@ -1,10 +1,12 @@
 defmodule Day11 do
-  @range 1..4
+  @range 1..300
 
   def solve1(grid_serial_number) do
     grid_serial_number
     |> calc_power_level_map()
     |> calc_windows()
+    |> Enum.max_by(fn {_position, power_level} -> power_level end)
+    |> elem(0)
   end
 
   def calc_power_level_map(grid_serial_number) do
@@ -18,13 +20,13 @@ defmodule Day11 do
 
     for x_range <- ranges,
         y_range <- ranges do
-      for x <- x_range, y <- y_range, reduce: Map.new() do
-        acc ->
+      for x <- x_range, y <- y_range, reduce: {nil, 0} do
+        {position, sum} ->
           power_level = Map.get(power_level_map, {x, y})
 
-          Map.update(acc, {x, y}, power_level, fn old_value ->
-            old_value + power_level
-          end)
+          if position == nil,
+            do: {{x, y}, sum + power_level},
+            else: {position, sum + power_level}
       end
     end
   end

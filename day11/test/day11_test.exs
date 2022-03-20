@@ -15,8 +15,12 @@ defmodule Day11Test do
     assert Day11.calc_power_level({101, 153}, 71) == 4
   end
 
-  @tag :skip
+  test "samples" do
+    assert Day11.solve1(18) == {33, 45}
+    assert Day11.solve1(42) == {21, 61}
+  end
+
   test "solve1" do
-    assert Day11.solve1(5468) == nil
+    assert Day11.solve1(5468) == {243, 64}
   end
 end
