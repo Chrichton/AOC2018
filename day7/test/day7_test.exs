@@ -25,6 +25,7 @@ defmodule Day7Test do
     assert Graph.to_edgelist(actual) == {:ok, "66 69\n65 66\n65 68\n67 65\n67 70\n68 69\n70 69\n"}
 
     assert Graph.is_acyclic?(actual)
+    refute Graph.is_tree?(actual)
   end
 
   test "find_roots" do
