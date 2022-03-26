@@ -38,8 +38,14 @@ defmodule Day12Test do
     assert actual == 325
   end
 
-  test "star" do
+  test "star1" do
     actual = Day12.solve1("star", 1..20)
+
+    assert actual == 2995
+  end
+
+  test "star2" do
+    actual = Day12.solve1("star", 1..50_000_000_000)
 
     assert actual == 2995
   end
