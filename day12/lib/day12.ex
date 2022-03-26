@@ -14,16 +14,16 @@ defmodule Day12 do
     end
   end
 
-  def solve1(filename) do
+  def solve1(filename, generations) do
     filename
     |> read_input()
-    |> next_generations()
+    |> next_generations(generations)
     |> MapSet.to_list()
     |> Enum.sum()
   end
 
-  def next_generations({pots, rules}) do
-    1..20
+  def next_generations({pots, rules}, generations) do
+    generations
     |> Enum.reduce(pots, fn _pass, acc ->
       next_generation(rules, acc)
     end)
