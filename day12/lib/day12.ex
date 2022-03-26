@@ -43,6 +43,23 @@ defmodule Day12 do
     {pots, rules}
   end
 
+  def rules_result(rules, pots, pot) do
+    rules
+    |> Enum.reduce_while(false, fn rule, acc ->
+      if check_rule(rule, pots, pot),
+        do: {:halt, rule.result},
+        else: {:cont, acc}
+    end)
+  end
+
+  def check_rule(rule, pots, pot) do
+    rule.current == MapSet.member?(pots, pot) &&
+      rule.prev == MapSet.member?(pots, pot - 1) &&
+      rule.prev_prev == MapSet.member?(pots, pot - 2) &&
+      rule.next == MapSet.member?(pots, pot + 1) &&
+      rule.next_next == MapSet.member?(pots, pot + 2)
+  end
+
   def parse_rule(rule_line) do
     condition_stop_index = index_of(rule_line, "=") - 1
 
@@ -59,14 +76,6 @@ defmodule Day12 do
     result = String.slice(rule_line, result_index, 1) == "#"
 
     Rule.new(conditions, result)
-  end
-
-  def check_rule(rule, pots, pot) do
-    rule.current == MapSet.member?(pots, pot) &&
-      rule.prev == MapSet.member?(pots, pot - 1) &&
-      rule.prev_prev == MapSet.member?(pots, pot - 2) &&
-      rule.next == MapSet.member?(pots, pot + 1) &&
-      rule.next_next == MapSet.member?(pots, pot + 2)
   end
 
   def index_of(string, substring) do

@@ -21,6 +21,17 @@ defmodule Day12Test do
     assert Enum.count(rules) == 14
   end
 
+  test "rules_result" do
+    {pots, rules} = Day12.read_input("sample")
+
+    assert Day12.rules_result(rules, pots, 0)
+    refute Day12.rules_result(rules, pots, 1)
+    refute Day12.rules_result(rules, pots, 2)
+    refute Day12.rules_result(rules, pots, 3)
+    assert Day12.rules_result(rules, pots, 4)
+    refute Day12.rules_result(rules, pots, 5)
+  end
+
   test "sample" do
   end
 
