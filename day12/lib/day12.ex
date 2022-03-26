@@ -17,30 +17,32 @@ defmodule Day12 do
   def solve1(filename) do
     filename
     |> read_input()
+    |> next_generations()
+    |> MapSet.to_list()
+    |> Enum.sum()
   end
 
-  def read_input(filename) do
-    File.read!(filename)
-    |> String.split("\n", trim: true)
-    |> parse_input()
+  def next_generations({pots, rules}) do
+    1..20
+    |> Enum.reduce(pots, fn _pass, acc ->
+      next_generation(rules, acc)
+    end)
   end
 
-  def parse_input([initial_state_line | rule_lines]) do
-    start_index = index_of(initial_state_line, ":") + 2
+  def next_generation(rules, pots) do
+    pots
+    |> pot_range()
+    |> Enum.reduce(MapSet.new(), fn pot, acc ->
+      if rules_result(rules, pots, pot),
+        do: MapSet.put(acc, pot),
+        else: acc
+    end)
+  end
 
-    pots =
-      initial_state_line
-      |> String.slice(start_index, String.length(initial_state_line))
-      |> String.codepoints()
-      |> Enum.with_index()
-      |> Enum.filter(fn {element, _index} -> element == "#" end)
-      |> MapSet.new(fn {_element, index} -> index end)
-
-    rules =
-      rule_lines
-      |> Enum.map(&parse_rule/1)
-
-    {pots, rules}
+  def pot_range(pots) do
+    pots
+    |> MapSet.to_list()
+    |> then(fn list -> (Enum.min(list) - 2)..(Enum.max(list) + 2) end)
   end
 
   def rules_result(rules, pots, pot) do
@@ -76,6 +78,30 @@ defmodule Day12 do
     result = String.slice(rule_line, result_index, 1) == "#"
 
     Rule.new(conditions, result)
+  end
+
+  def read_input(filename) do
+    File.read!(filename)
+    |> String.split("\n", trim: true)
+    |> parse_input()
+  end
+
+  def parse_input([initial_state_line | rule_lines]) do
+    start_index = index_of(initial_state_line, ":") + 2
+
+    pots =
+      initial_state_line
+      |> String.slice(start_index, String.length(initial_state_line))
+      |> String.codepoints()
+      |> Enum.with_index()
+      |> Enum.filter(fn {element, _index} -> element == "#" end)
+      |> MapSet.new(fn {_element, index} -> index end)
+
+    rules =
+      rule_lines
+      |> Enum.map(&parse_rule/1)
+
+    {pots, rules}
   end
 
   def index_of(string, substring) do
