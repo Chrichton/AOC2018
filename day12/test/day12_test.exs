@@ -48,5 +48,21 @@ defmodule Day12Test do
     actual = Day12.solve1("star", 1..50_000_000_000)
 
     assert actual == 2995
+
+    # generation: 161, sum: 11890
+    # generation: 162, sum: 12130
+
+    # 12130 73
+    # 12203 73
+    # 12276
+    # 12349
+    # 12422
+    # 12495
+    # 12568
+    # 12641
+    # 12714
+    # 12787
+    # 12860
+    # 12933
   end
 end
