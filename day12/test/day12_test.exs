@@ -45,28 +45,22 @@ defmodule Day12Test do
   end
 
   test "star2" do
+    # takes much too long!
     # actual = Day12.solve1("star", 1..50_000_000_000)
 
-    # assert actual == ?
+    # Found cycle: diff between sums always 73 from generation 161 on
 
-    # generation: 161, sum: 11890
-    # generation: 162, sum: 12130
+    # generation: 160, sum: 11890
+    # generation: 161, sum: 12130
 
-    # 12130 73
+    # 12130
     # 12203 73
-    # 12276
-    # 12349
-    # 12422
-    # 12495
-    # 12568
-    # 12641
-    # 12714
-    # 12787
-    # 12860
-    # 12933
+    # 12276 73
+    # 12349 73
+    # 12422 73
+    # ........
 
-    # sum(generation) = 12130 + (generation - 162) * 73
-
-    # 3650000000304 too low
+    # sum(generation) = 12130 + (generation - 161) * 73 =>
+    # sum(50_000_000_000) = 12130 + (50_000_000_000 - 161) * 73 =  3650000000377
   end
 end
