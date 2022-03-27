@@ -45,9 +45,9 @@ defmodule Day12Test do
   end
 
   test "star2" do
-    actual = Day12.solve1("star", 1..50_000_000_000)
+    # actual = Day12.solve1("star", 1..50_000_000_000)
 
-    assert actual == 2995
+    # assert actual == ?
 
     # generation: 161, sum: 11890
     # generation: 162, sum: 12130
@@ -64,5 +64,9 @@ defmodule Day12Test do
     # 12787
     # 12860
     # 12933
+
+    # sum(generation) = 12130 + (generation - 162) * 73
+
+    # 3650000000304 too low
   end
 end
