@@ -4,11 +4,14 @@ defmodule Day13Test do
   test "read_input" do
     {cart_map, track_map} = Day13.read_input("sample")
 
-    %Cart{direction: direction} = Map.get(cart_map, {2, 0})
-    assert direction == :east
+    cart = Map.get(cart_map, {2, 0})
 
-    %Cart{direction: direction} = Map.get(cart_map, {9, 3})
-    assert direction == :south
+    assert cart.direction == :east
+    assert cart.next_turn == :left
+
+    cart = Map.get(cart_map, {9, 3})
+    assert cart.direction == :south
+    assert cart.next_turn == :left
   end
 
   test "solve1" do
