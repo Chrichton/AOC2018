@@ -15,7 +15,7 @@ defmodule Track do
   def new(type), do: %Track{type: type}
 
   def new(track_map, {x, y}, direction) do
-    if Map.get(track_map, {x, y}) != nil do
+    if Map.get(track_map, {x - 1, y}) != nil and Map.get(track_map, {x, y - 1} != nil) do
       Track.new(:crossing)
     else
       case direction do
