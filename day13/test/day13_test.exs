@@ -24,6 +24,14 @@ defmodule Day13Test do
     assert track.type == :vertical
   end
 
+  test "sort positions" do
+    positions = [{1, 2}, {2, 1}, {1, 1}, {1, 2}]
+
+    actual = Enum.sort_by(positions, & &1, Position)
+
+    assert actual == [{1, 1}, {2, 1}, {1, 2}, {1, 2}]
+  end
+
   test "solve1" do
   end
 

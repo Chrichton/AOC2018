@@ -68,6 +68,21 @@ defmodule Cart do
   end
 end
 
+defmodule Position do
+  def compare({_x1, _y1} = pos1, {_x2, _y2} = pos2) when pos1 == pos2,
+    do: :eq
+
+  def compare({_x1, y1}, {_x2, y2}) when y1 < y2, do: :lt
+
+  def compare({_x1, y1}, {_x2, y2}) when y1 > y2, do: :gt
+
+  def compare({x1, y1}, {x2, y2}) when y1 == y2 do
+    if x1 < x2,
+      do: :lt,
+      else: :gt
+  end
+end
+
 defmodule Day13 do
   def read_input(filename) do
     File.read!(filename)
