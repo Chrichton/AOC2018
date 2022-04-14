@@ -194,6 +194,22 @@ defmodule Day13 do
   def solve1(filename) do
     filename
     |> read_input()
+    |> find_first_crash()
+  end
+
+  def find_first_crash({carts, track_map}) do
+    carts = next_step(carts, track_map)
+
+    positions = Enum.map(carts, & &1.position)
+
+    duplicate =
+      (positions -- Enum.uniq(positions))
+      |> Enum.sort(Position)
+      |> Enum.at(0)
+
+    if duplicate != nil,
+      do: duplicate,
+      else: find_first_crash({carts, track_map})
   end
 
   def solve2(filename) do

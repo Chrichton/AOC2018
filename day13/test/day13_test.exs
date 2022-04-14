@@ -51,6 +51,12 @@ defmodule Day13Test do
     assert cart.position == {3, 0}
   end
 
+  test "sample" do
+    actual = Day13.solve1("sample")
+
+    assert actual == {7, 3}
+  end
+
   test "solve1" do
   end
 
