@@ -2,17 +2,19 @@ defmodule Day13Test do
   use ExUnit.Case
 
   test "read_input" do
-    {cart_map, track_map} = Day13.read_input("sample")
+    {carts, track_map} = Day13.read_input("sample")
 
-    assert cart_map |> Map.keys() |> Enum.count() == 2
+    assert Enum.count(carts) == 2
 
-    cart = Map.get(cart_map, {2, 0})
-    assert cart.direction == :east
-    assert cart.next_turn == :left
-
-    cart = Map.get(cart_map, {9, 3})
+    cart = Enum.at(carts, 0)
     assert cart.direction == :south
     assert cart.next_turn == :left
+    assert cart.position == {9, 3}
+
+    cart = Enum.at(carts, 1)
+    assert cart.direction == :east
+    assert cart.next_turn == :left
+    assert cart.position == {2, 0}
 
     track = Map.get(track_map, {0, 0})
     assert track.type == :slash
