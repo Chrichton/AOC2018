@@ -34,6 +34,23 @@ defmodule Day13Test do
     assert actual == [{1, 1}, {2, 1}, {1, 2}, {1, 2}]
   end
 
+  test "next_step" do
+    {carts, track_map} = Day13.read_input("sample")
+    next_carts = Day13.next_step(carts, track_map)
+
+    assert Enum.count(next_carts) == 2
+
+    cart = Enum.at(next_carts, 0)
+    assert cart.direction == :east
+    assert cart.next_turn == :straight
+    assert cart.position == {9, 4}
+
+    cart = Enum.at(next_carts, 1)
+    assert cart.direction == :east
+    assert cart.next_turn == :left
+    assert cart.position == {3, 0}
+  end
+
   test "solve1" do
   end
 
