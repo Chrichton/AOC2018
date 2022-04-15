@@ -58,10 +58,10 @@ defmodule Cart do
   defp turn_slash(%Cart{direction: direction} = cart, next_position) do
     next_direction =
       case direction do
-        :north -> :west
-        :west -> :north
-        :south -> :east
-        :east -> :south
+        :north -> :east
+        :west -> :south
+        :south -> :west
+        :east -> :north
       end
 
     %{cart | direction: next_direction, position: next_position}
@@ -70,10 +70,10 @@ defmodule Cart do
   defp turn_backslash(%Cart{direction: direction} = cart, next_position) do
     next_direction =
       case direction do
-        :north -> :east
-        :west -> :south
-        :south -> :west
-        :east -> :north
+        :north -> :west
+        :west -> :north
+        :south -> :east
+        :east -> :south
       end
 
     %{cart | direction: next_direction, position: next_position}
@@ -156,7 +156,7 @@ defmodule Day13 do
           {carts, Map.put(track_map, {x, y}, Track.new(:slash))}
 
         "\\" ->
-          {carts, Map.put(track_map, {x, y}, Track.new(:back_slash))}
+          {carts, Map.put(track_map, {x, y}, Track.new(:backslash))}
 
         "+" ->
           {carts, Map.put(track_map, {x, y}, Track.new(:crossing))}
