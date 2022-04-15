@@ -215,5 +215,21 @@ defmodule Day13 do
   def solve2(filename) do
     filename
     |> read_input()
+    |> locate_last_cart()
+  end
+
+  def locate_last_cart({carts, track_map}) do
+    carts = next_step(carts, track_map)
+
+    positions = Enum.map(carts, & &1.position)
+    duplicate_positions = positions -- Enum.uniq(positions)
+
+    next_carts = Enum.reject(carts, &(&1.position in duplicate_positions))
+
+    cond do
+      Enum.count(next_carts) == 1 -> Enum.at(next_carts, 0).position
+      Enum.count(next_carts) == 0 -> Enum.at(carts, 0).position
+      true -> locate_last_cart({next_carts, track_map})
+    end
   end
 end
