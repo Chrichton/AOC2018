@@ -221,11 +221,9 @@ defmodule Day13 do
   def locate_last_cart({carts, track_map}) do
     next_carts = next_step_2(carts, track_map)
 
-    cond do
-      Enum.count(next_carts) == 1 -> {carts, Enum.at(next_carts, 0)}
-      Enum.count(next_carts) == 0 -> {carts, Enum.at(next_carts, 0)}
-      true -> locate_last_cart({next_carts, track_map})
-    end
+    if Enum.count(next_carts) == 1,
+      do: {carts, Enum.at(next_carts, 0)},
+      else: locate_last_cart({next_carts, track_map})
   end
 
   def next_step_2(carts, track_map) do

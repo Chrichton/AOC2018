@@ -64,7 +64,7 @@ defmodule Day13Test do
   end
 
   test "sample2" do
-    actual = Day13.solve1("sample2")
+    actual = Day13.solve2("sample2")
 
     assert actual == {6, 4}
   end
