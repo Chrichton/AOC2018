@@ -63,9 +63,16 @@ defmodule Day13Test do
     assert actual == {91, 69}
   end
 
+  test "sample2" do
+    actual = Day13.solve1("sample2")
+
+    assert actual == {6, 4}
+  end
+
   test "solve2" do
     actual = Day13.solve2("star")
 
-    assert actual == {98, 125}
+    # python solution
+    assert actual == {44, 87}
   end
 end

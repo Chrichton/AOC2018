@@ -1,3 +1,6 @@
+# call via
+# python3 day13.py < star
+
 import fileinput
 
 # define up, down, left, right directions
