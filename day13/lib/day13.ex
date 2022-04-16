@@ -219,17 +219,24 @@ defmodule Day13 do
   end
 
   def locate_last_cart({carts, track_map}) do
-    carts = next_step(carts, track_map)
-
-    positions = Enum.map(carts, & &1.position)
-    duplicate_positions = positions -- Enum.uniq(positions)
-
-    next_carts = Enum.reject(carts, &(&1.position in duplicate_positions))
+    next_carts = next_step_2(carts, track_map)
 
     cond do
-      Enum.count(next_carts) == 1 -> Enum.at(next_carts, 0).position
-      Enum.count(next_carts) == 0 -> Enum.at(carts, 0).position
+      Enum.count(next_carts) == 1 -> {carts, Enum.at(next_carts, 0)}
+      Enum.count(next_carts) == 0 -> {carts, Enum.at(next_carts, 0)}
       true -> locate_last_cart({next_carts, track_map})
     end
+  end
+
+  def next_step_2(carts, track_map) do
+    carts
+    |> Enum.sort_by(fn %Cart{position: position} -> position end, Position)
+    |> Enum.reduce([], fn %Cart{} = cart, acc ->
+      next_cart = Cart.move(cart, track_map)
+
+      if index = Enum.find_index(acc, &(&1.position == next_cart.position)),
+        do: List.delete_at(acc, index),
+        else: [next_cart | acc]
+    end)
   end
 end
