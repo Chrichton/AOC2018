@@ -13,19 +13,6 @@ defmodule Track do
   @type t :: %__MODULE__{type: type()}
 
   def new(type), do: %Track{type: type}
-
-  def new(track_map, {x, y}, direction) do
-    if Map.get(track_map, {x - 1, y}) != nil and Map.get(track_map, {x, y - 1} != nil) do
-      Track.new(:crossing)
-    else
-      case direction do
-        :west -> Track.new(:horitontal)
-        :east -> Track.new(:horitontal)
-        :north -> Track.new(:vertical)
-        :south -> Track.new(:vertical)
-      end
-    end
-  end
 end
 
 defmodule Cart do
@@ -162,20 +149,16 @@ defmodule Day13 do
           {carts, Map.put(track_map, {x, y}, Track.new(:crossing))}
 
         "^" ->
-          {[Cart.new(:north, {x, y}) | carts],
-           Map.put(track_map, {x, y}, Track.new(track_map, {x, y}, :north))}
+          {[Cart.new(:north, {x, y}) | carts], Map.put(track_map, {x, y}, Track.new(:vertical))}
 
         ">" ->
-          {[Cart.new(:east, {x, y}) | carts],
-           Map.put(track_map, {x, y}, Track.new(track_map, {x, y}, :east))}
+          {[Cart.new(:east, {x, y}) | carts], Map.put(track_map, {x, y}, Track.new(:horitontal))}
 
         "v" ->
-          {[Cart.new(:south, {x, y}) | carts],
-           Map.put(track_map, {x, y}, Track.new(track_map, {x, y}, :south))}
+          {[Cart.new(:south, {x, y}) | carts], Map.put(track_map, {x, y}, Track.new(:vertical))}
 
         "<" ->
-          {[Cart.new(:west, {x, y}) | carts],
-           Map.put(track_map, {x, y}, Track.new(track_map, {x, y}, :west))}
+          {[Cart.new(:west, {x, y}) | carts], Map.put(track_map, {x, y}, Track.new(:horitontal))}
 
         " " ->
           {carts, track_map}
