@@ -72,7 +72,6 @@ defmodule Day13Test do
   test "solve2" do
     actual = Day13.solve2("star")
 
-    # python solution
     assert actual == {44, 87}
   end
 end

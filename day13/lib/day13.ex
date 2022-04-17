@@ -205,7 +205,7 @@ defmodule Day13 do
     next_carts = next_step_2(carts, track_map)
 
     if Enum.count(next_carts) == 1,
-      do: {carts, Enum.at(next_carts, 0)},
+      do: Enum.at(next_carts, 0).position,
       else: locate_last_cart({next_carts, track_map})
   end
 
@@ -213,11 +213,17 @@ defmodule Day13 do
     carts
     |> Enum.sort_by(fn %Cart{position: position} -> position end, Position)
     |> Enum.reduce([], fn %Cart{} = cart, acc ->
-      next_cart = Cart.move(cart, track_map)
+      if index = Enum.find_index(acc, &(&1.position == cart.position)) do
+        List.delete_at(acc, index)
+      else
+        next_cart = Cart.move(cart, track_map)
 
-      if index = Enum.find_index(acc, &(&1.position == next_cart.position)),
-        do: List.delete_at(acc, index),
-        else: [next_cart | acc]
+        if index = Enum.find_index(acc, &(&1.position == next_cart.position)) do
+          List.delete_at(acc, index)
+        else
+          [next_cart | acc]
+        end
+      end
     end)
   end
 end
