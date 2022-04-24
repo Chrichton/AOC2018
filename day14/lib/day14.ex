@@ -1,5 +1,19 @@
 defmodule Day14 do
   def solve1() do
+    score_after_recipies([3, 7], 0, 1, 360_781)
+  end
+
+  def score_after_recipies(recipies, index1, index2, n) do
+    {recipies, index1, index2} = next_step(recipies, index1, index2)
+
+    if Enum.count(recipies) >= n + 10 do
+      recipies
+      |> Enum.reverse()
+      |> Enum.take(10)
+      |> Enum.reverse()
+    else
+      score_after_recipies(recipies, index1, index2, n)
+    end
   end
 
   def next_step(recipies, index1, index2) do
@@ -11,7 +25,7 @@ defmodule Day14 do
   end
 
   def calc_index(recipies, index) do
-    rem(Enum.at(recipies, index) + 1, Enum.count(recipies) + 1)
+    rem(index + Enum.at(recipies, index) + 1, Enum.count(recipies))
   end
 
   def new_recipies(recipies, index1, index2) do
@@ -26,7 +40,7 @@ defmodule Day14 do
   end
 
   def score(recipies, index1, index2) do
-    Enum.at(recipies, index1) + Enum.at(recipies, index2)
+    Enum.at(recipies, index1, 0) + Enum.at(recipies, index2, 0)
   end
 
   def solve2() do
