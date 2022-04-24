@@ -21,8 +21,15 @@ defmodule Day14Test do
   end
 
   test "score_after_recipies" do
-    actual = Day14.score_after_recipies([3, 7], 0, 1, 9)
+    actual = Day14.solve1(9)
 
     assert actual == [5, 1, 5, 8, 9, 1, 6, 7, 7, 9]
+  end
+
+  # Finished in 782.2 seconds
+  test "solve1" do
+    actual = Day14.solve1(360_781)
+
+    assert actual == [6, 5, 2, 1, 5, 7, 1, 0, 1, 0]
   end
 end

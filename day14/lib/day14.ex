@@ -1,6 +1,6 @@
 defmodule Day14 do
-  def solve1() do
-    score_after_recipies([3, 7], 0, 1, 360_781)
+  def solve1(n) do
+    score_after_recipies([3, 7], 0, 1, n)
   end
 
   def score_after_recipies(recipies, index1, index2, n) do
