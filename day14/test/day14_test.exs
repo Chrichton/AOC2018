@@ -32,4 +32,22 @@ defmodule Day14Test do
 
     assert actual == [6, 5, 2, 1, 5, 7, 1, 0, 1, 0]
   end
+
+  test "samples2" do
+    actual = Day14.solve2(10, [0, 1, 2, 4, 5])
+    assert actual == 5
+
+    actual = Day14.solve2(30, [9, 2, 5, 1, 0])
+    assert actual == 18
+
+    actual = Day14.solve2(5000, [5, 9, 4, 1, 4])
+    assert actual == 2018
+  end
+
+  # 360781 is too low?!
+  test "solve2" do
+    actual = Day14.solve2(360_781, [6, 5, 2, 1, 5, 7, 1, 0, 1, 0])
+
+    assert actual == 360_781
+  end
 end

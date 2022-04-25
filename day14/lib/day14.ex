@@ -43,6 +43,25 @@ defmodule Day14 do
     Enum.at(recipies, index1, 0) + Enum.at(recipies, index2, 0)
   end
 
-  def solve2() do
+  def sublist_index([], _, _), do: -1
+
+  def sublist_index(l1 = [_ | t], l2, i) do
+    if List.starts_with?(l1, l2),
+      do: i,
+      else: sublist_index(t, l2, i + 1)
+  end
+
+  def solve2(n, digits) do
+    first_appearance_of_digits([3, 7], 0, 1, n, digits)
+  end
+
+  def first_appearance_of_digits(recipies, index1, index2, n, digits) do
+    {recipies, index1, index2} = next_step(recipies, index1, index2)
+
+    if Enum.count(recipies) >= n + 10 do
+      sublist_index(recipies, digits, 0)
+    else
+      first_appearance_of_digits(recipies, index1, index2, n, digits)
+    end
   end
 end
